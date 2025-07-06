@@ -8,6 +8,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Form,
   FormControl,
   FormField,
@@ -27,13 +34,16 @@ import {
 import { personalizeContent, type PersonalizeContentOutput } from '@/ai/flows/personalize-content';
 import { Loader2, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   email: z.string().email({ message: 'Please enter a valid email address.' }),
-  message: z.string().min(10, { message: 'Message must be at least 10 characters.' }),
+  phone: z.string().min(1, { message: 'Phone number is required.' }),
+  company: z.string().optional(),
+  service: z.string().optional(),
+  message: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -49,6 +59,9 @@ export default function Contact() {
     defaultValues: {
       name: '',
       email: '',
+      phone: '',
+      company: '',
+      service: '',
       message: '',
     },
   });
@@ -56,7 +69,16 @@ export default function Contact() {
   async function onSubmit(values: FormValues) {
     setLoading(true);
     try {
-      const aiResult = await personalizeContent({ userInquiry: values.message });
+      let userInquiry = `The user's message is: "${values.message || 'No message provided.'}".`;
+      if (values.service) {
+        userInquiry = `The user is interested in the "${values.service}" service. ` + userInquiry;
+      }
+      if (values.company) {
+          userInquiry = `The user works at ${values.company}. ` + userInquiry;
+      }
+      userInquiry = `Contact details: Name: ${values.name}, Email: ${values.email}, Phone: ${values.phone}. ` + userInquiry;
+
+      const aiResult = await personalizeContent({ userInquiry });
       setResult(aiResult);
       setIsDialogOpen(true);
       form.reset();
@@ -78,15 +100,15 @@ export default function Contact() {
         <div className="grid items-center justify-center gap-4 text-center">
           <div className="space-y-3">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">Contact Us</h2>
-            <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Have a project in mind? Fill out the form below and our AI assistant will suggest the best services for you.
+            <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              Have a project in mind? Fill out the form below to get in touch. Our AI assistant will analyze your request to suggest the best services for you.
             </p>
           </div>
           <div className="mx-auto w-full max-w-lg">
             <Card>
               <CardContent className="pt-6">
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <FormField
                       control={form.control}
                       name="name"
@@ -113,16 +135,64 @@ export default function Contact() {
                         </FormItem>
                       )}
                     />
+                     <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone</FormLabel>
+                          <FormControl>
+                            <Input placeholder="(123) 456-7890" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="company"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Company (Optional)</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Acme Inc." {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="service"
+                      render={({ field }) => (
+                        <FormItem className="sm:col-span-2">
+                          <FormLabel>Service of Interest (Optional)</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select a service" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="Web Design">Web Design</SelectItem>
+                              <SelectItem value="Automation">Automation</SelectItem>
+                              <SelectItem value="IT Services">IT Services</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     <FormField
                       control={form.control}
                       name="message"
                       render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Your Inquiry</FormLabel>
+                        <FormItem className="sm:col-span-2">
+                          <FormLabel>Message (Optional)</FormLabel>
                           <FormControl>
                             <Textarea
                               placeholder="Tell us about your project or what you need help with..."
-                              className="min-h-[120px]"
+                              className="min-h-[100px]"
                               {...field}
                             />
                           </FormControl>
@@ -130,7 +200,7 @@ export default function Contact() {
                         </FormItem>
                       )}
                     />
-                    <Button type="submit" disabled={loading} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
+                    <Button type="submit" disabled={loading} className="w-full sm:col-span-2 bg-accent hover:bg-accent/90 text-accent-foreground">
                       {loading ? (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       ) : (

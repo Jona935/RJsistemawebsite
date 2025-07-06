@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, CodeXml } from 'lucide-react';
 
 const navLinks = [
+  { name: 'Partners', href: '#partners' },
   { name: 'Services', href: '#services' },
   { name: 'Portfolio', href: '#portfolio' },
   { name: 'About', href: '#about' },
