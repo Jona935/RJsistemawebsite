@@ -166,14 +166,13 @@ export default function Chatbot() {
                                             >
                                                 {message.text}
                                                 {message.links && message.links.length > 0 && (
-                                                    <div className="mt-2 flex flex-col gap-1">
+                                                    <div className="mt-2 flex flex-col gap-2">
                                                         {message.links.map((link, index) => (
                                                             <Button
                                                                 key={index}
                                                                 asChild
-                                                                variant="link"
-                                                                size="sm"
-                                                                className="p-0 h-auto justify-start text-primary whitespace-normal text-left"
+                                                                variant="secondary"
+                                                                className="h-auto w-full justify-start whitespace-normal text-left px-3 py-2"
                                                                 onClick={() => setIsOpen(false)}
                                                             >
                                                                 <Link href={link.href}>{link.text}</Link>
