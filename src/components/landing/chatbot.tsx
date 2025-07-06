@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Bot, Send, X, Loader2, User } from 'lucide-react';
-import { navigate, type NavigateOutput } from '@/ai/flows/navigate-flow';
+import { navigate, type NavigateOutput, type NavigateInput } from '@/ai/flows/navigate-flow';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -16,6 +16,10 @@ type Message = {
     sender: 'bot' | 'user';
     text?: string;
     links?: NavigateOutput['suggestedLinks'];
+    contactAction?: {
+        text: string;
+        href: string;
+    };
     timestamp: string;
 };
 
@@ -35,6 +39,9 @@ export default function Chatbot() {
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
     const [showCallouts, setShowCallouts] = useState(true);
+    
+    const [isFormMode, setIsFormMode] = useState(false);
+    const [formData, setFormData] = useState<Partial<NavigateInput['formData']>>({});
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -96,7 +103,19 @@ export default function Chatbot() {
             }));
 
         try {
-            const result = await navigate({ history: historyForAI });
+            const result = await navigate({ 
+                history: historyForAI,
+                isLeadCaptureMode: isFormMode,
+                formData: formData,
+            });
+            
+            if (result.startLeadCapture) {
+                setIsFormMode(true);
+            }
+            if (result.updatedFormData) {
+                setFormData(result.updatedFormData);
+            }
+
             const botMessage: Message = {
                 id: Date.now() + 1,
                 sender: 'bot',
@@ -104,6 +123,16 @@ export default function Chatbot() {
                 links: result.suggestedLinks,
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             };
+
+            if (result.isFormComplete && result.contactLink) {
+                botMessage.contactAction = {
+                    text: 'Enviar Información por WhatsApp',
+                    href: result.contactLink
+                };
+                setIsFormMode(false);
+                setFormData({});
+            }
+
             setMessages((prev) => [...prev, botMessage]);
         } catch (error) {
             console.error('Error fetching navigation help:', error);
@@ -119,6 +148,8 @@ export default function Chatbot() {
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             };
             setMessages((prev) => [...prev, errorMessage]);
+            setIsFormMode(false);
+            setFormData({});
         } finally {
             setIsLoading(false);
         }
@@ -215,6 +246,21 @@ export default function Chatbot() {
                                                                 <Link href={link.href}>{link.text}</Link>
                                                             </Button>
                                                         ))}
+                                                    </div>
+                                                )}
+                                                {message.contactAction && (
+                                                    <div className="mt-2">
+                                                        <Button
+                                                            variant="accent"
+                                                            className="h-auto w-full justify-center whitespace-normal text-left px-3 py-2"
+                                                            onClick={() => {
+                                                                window.open(message.contactAction!.href, '_blank');
+                                                                setIsOpen(false);
+                                                            }}
+                                                        >
+                                                            {message.contactAction.text}
+                                                            <Send className="ml-2 h-4 w-4" />
+                                                        </Button>
                                                     </div>
                                                 )}
                                             </div>
