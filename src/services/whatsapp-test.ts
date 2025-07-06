@@ -22,7 +22,7 @@ export async function sendTestNotification() {
   };
 
   try {
-    console.log('Intentando enviar notificación de prueba con los siguientes datos:', JSON.stringify(testLeadData, null, 2));
+    console.log('Intentando enviar notificación de prueba a través de la plantilla "lead_notification" con los siguientes datos:', JSON.stringify(testLeadData, null, 2));
     const result = await sendLeadNotification(testLeadData, 'form'); // Source can be 'form' or 'chatbot'
     console.log('--- PRUEBA DE WHATSAPP EXITOSA ---');
     console.log('Respuesta de la API de Meta:', result);
