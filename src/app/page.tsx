@@ -9,17 +9,25 @@ import Footer from '@/components/landing/footer';
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-dvh bg-background">
-      <Header />
-      <main className="flex-1">
-        <Hero />
-        <Partners />
-        <Services />
-        <Portfolio />
-        <About />
-        <Contact />
-      </main>
-      <Footer />
+    <div className="relative bg-background min-h-dvh overflow-clip">
+      <div aria-hidden="true" className="absolute inset-0 z-0">
+        <div className="absolute top-[-10rem] -left-48 w-96 h-96 bg-accent/20 rounded-full filter blur-3xl opacity-40 animate-blob" />
+        <div className="absolute top-[-1rem] -right-48 w-96 h-96 bg-primary/10 rounded-full filter blur-3xl opacity-40 animate-blob [animation-delay:-2s]" />
+        <div className="absolute -bottom-32 left-20 w-96 h-96 bg-accent/10 rounded-full filter blur-3xl opacity-40 animate-blob [animation-delay:-4s]" />
+      </div>
+
+      <div className="relative z-10 flex flex-col min-h-dvh">
+        <Header />
+        <main className="flex-1">
+          <Hero />
+          <Partners />
+          <Services />
+          <Portfolio />
+          <About />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }
