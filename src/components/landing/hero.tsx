@@ -9,8 +9,9 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
 } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 
 const heroSlides = [
   {
@@ -35,21 +36,15 @@ const heroSlides = [
 
 
 export default function Hero() {
-  const plugin = React.useRef(
-    Autoplay({ delay: 5000, stopOnInteraction: true })
-  );
 
   return (
     <section id="hero" className="w-full py-12 md:py-16">
        <Carousel
-          plugins={[plugin.current]}
-          className="w-full"
+          className="w-full relative"
           opts={{
             align: "start",
             loop: true,
           }}
-          onMouseEnter={plugin.current.stop}
-          onMouseLeave={plugin.current.reset}
         >
         <CarouselContent>
           {heroSlides.map((slide) => (
@@ -92,6 +87,8 @@ export default function Hero() {
             </CarouselItem>
           ))}
         </CarouselContent>
+        <CarouselPrevious className="absolute left-8 top-1/2 -translate-y-1/2 z-10 hidden sm:flex" />
+        <CarouselNext className="absolute right-8 top-1/2 -translate-y-1/2 z-10 hidden sm:flex" />
       </Carousel>
     </section>
   );
