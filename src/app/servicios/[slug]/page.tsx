@@ -116,7 +116,7 @@ export default function ServicePage({ params }: ServicePageProps) {
     <div className="flex flex-col min-h-dvh bg-background">
       <Header />
       <main className="flex-1">
-        <section className="w-full py-12 md:py-16">
+        <section className="w-full py-8 md:py-12">
           <div className="container px-4 md:px-6">
             <div className="mb-8">
               <Button asChild variant="outline">
