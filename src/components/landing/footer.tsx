@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 
 export default function Footer() {
   return (
-    <footer className="w-full p-4 md:p-6 border-t">
+    <footer className="w-full p-4 md:p-6 border-t bg-background">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground">
           &copy; {new Date().getFullYear()} JRsistemas. Todos los derechos reservados.

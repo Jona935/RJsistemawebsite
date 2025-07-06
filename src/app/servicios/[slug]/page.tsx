@@ -115,7 +115,7 @@ export default function ServicePage({ params }: ServicePageProps) {
   return (
     <div className="flex flex-col min-h-dvh bg-background">
       <Header />
-      <main className="flex-1">
+      <main className="flex-1 bg-background">
         <section className="w-full pt-6 pb-12 md:pb-24 lg:pb-32">
           <div className="container px-4 md:px-6">
             <div className="mb-8">
