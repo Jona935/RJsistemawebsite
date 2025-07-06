@@ -200,7 +200,7 @@ export default function Contact() {
                         </FormItem>
                       )}
                     />
-                    <Button type="submit" disabled={loading} className="w-full sm:col-span-2 bg-accent hover:bg-accent/90 text-accent-foreground">
+                    <Button type="submit" disabled={loading} variant="accent" className="w-full sm:col-span-2">
                       {loading ? (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       ) : (

@@ -31,7 +31,7 @@ export default function Header() {
           ))}
         </nav>
         <div className="hidden md:block">
-          <Button asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
+          <Button asChild variant="accent">
             <Link href="#contact">Contáctanos</Link>
           </Button>
         </div>
@@ -55,7 +55,7 @@ export default function Header() {
                   </Link>
                 ))}
               </nav>
-              <Button asChild className="bg-accent hover:bg-accent/90 text-accent-foreground" onClick={() => setIsOpen(false)}>
+              <Button asChild variant="accent" onClick={() => setIsOpen(false)}>
                 <Link href="#contact">Contáctanos</Link>
               </Button>
             </div>
