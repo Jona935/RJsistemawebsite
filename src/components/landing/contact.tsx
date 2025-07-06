@@ -49,8 +49,8 @@ export default function Contact() {
   });
 
   async function onSubmit(values: FormValues) {
-    // IMPORTANTE: Reemplaza este número con tu número de WhatsApp, incluyendo el código de país (ej. 521234567890).
-    const whatsAppNumber = "521XXXXXXXXXX"; 
+    // El número de WhatsApp se configura en el archivo .env (NEXT_PUBLIC_WHATSAPP_NUMBER)
+    const whatsAppNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "521XXXXXXXXXX"; 
 
     const messageParts = [
       `*Nuevo Lead de JRsistemas*`,

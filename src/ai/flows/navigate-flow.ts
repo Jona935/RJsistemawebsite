@@ -106,8 +106,8 @@ const navigateFlow = ai.defineFlow(
     const { output } = await prompt(input);
 
     if (output?.isFormComplete && output.updatedFormData) {
-      // IMPORTANTE: Reemplaza este número con tu número de WhatsApp.
-      const whatsAppNumber = "521XXXXXXXXXX"; 
+      // El número de WhatsApp se configura en el archivo .env (NEXT_PUBLIC_WHATSAPP_NUMBER)
+      const whatsAppNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "521XXXXXXXXXX";
       const values = output.updatedFormData;
       const messageParts = [
         `*Nuevo Lead de JRsistemas (Chatbot)*`,
