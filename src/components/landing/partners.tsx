@@ -62,8 +62,8 @@ export default function Partners() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="hidden sm:flex hover:transform-none" />
-          <CarouselNext className="hidden sm:flex hover:transform-none" />
+          <CarouselPrevious className="hidden sm:flex" />
+          <CarouselNext className="hidden sm:flex" />
         </Carousel>
       </div>
     </section>
