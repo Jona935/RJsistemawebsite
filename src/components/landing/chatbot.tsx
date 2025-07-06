@@ -114,14 +114,13 @@ export default function Chatbot() {
                     <span className="sr-only">Abrir chat de ayuda</span>
                 </Button>
             </div>
-
             {isOpen && (
                 <div className="fixed bottom-24 right-6 z-50 animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95">
                     <Card className="w-80 h-[500px] flex flex-col shadow-2xl">
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div className="flex items-center gap-2">
                                 <Sparkles className="h-5 w-5 text-primary" />
-                                <CardTitle className="text-lg font-headline">Asistente</Title>
+                                <CardTitle className="text-lg font-headline">Asistente</CardTitle>
                             </div>
                         </CardHeader>
                         <CardContent className="flex-grow p-4 overflow-y-auto">
