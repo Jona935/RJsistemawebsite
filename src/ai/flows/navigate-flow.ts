@@ -87,7 +87,17 @@ const prompt = ai.definePrompt({
 
 **Contexto Actual:**
 - **Modo Captura de Leads Activo:** \`{{isLeadCaptureMode}}\`
-- **Datos Recopilados Hasta Ahora:** \`{{JSON.stringify formData}}\`
+- **Datos Recopilados Hasta Ahora:**
+{{#if formData}}
+- Nombre: {{formData.name}}
+- Email: {{formData.email}}
+- Teléfono: {{formData.phone}}
+- Empresa: {{formData.company}}
+- Servicio: {{formData.service}}
+- Mensaje: {{formData.message}}
+{{else}}
+(No hay datos todavía)
+{{/if}}
 - **Historial de Conversación:**
 {{#each history}}
 - **{{this.sender}}**: {{{this.text}}}
