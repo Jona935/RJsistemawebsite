@@ -42,10 +42,16 @@ export default function Hero() {
   );
 
   return (
-    <section id="hero" className="w-full py-12 md:py-16">
+    <section id="hero" className="relative w-full overflow-hidden py-12 md:py-16">
+      <div aria-hidden="true" className="absolute inset-0 z-0">
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-accent/30 rounded-full blur-3xl animate-blob" />
+        <div className="absolute top-10 right-10 w-80 h-80 bg-accent/20 rounded-full blur-2xl animate-blob [animation-delay:-2s]" />
+        <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-primary/10 rounded-full blur-[100px] animate-blob [animation-delay:-4s]" />
+      </div>
+
        <Carousel
           plugins={[plugin.current]}
-          className="w-full relative"
+          className="w-full relative z-10"
           opts={{
             align: "start",
             loop: true,
