@@ -99,7 +99,7 @@ export default function Contact() {
       <div className="container px-4 md:px-6">
         <div className="grid items-center justify-center gap-4 text-center">
           <div className="space-y-3">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">Contact Us</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">Contact Us</h2>
             <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               Have a project in mind? Fill out the form below to get in touch. Our AI assistant will analyze your request to suggest the best services for you.
             </p>
