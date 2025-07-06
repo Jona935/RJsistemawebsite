@@ -159,7 +159,7 @@ export default function Chatbot() {
                                                             asChild
                                                             variant="link"
                                                             size="sm"
-                                                            className="p-0 h-auto justify-start text-primary"
+                                                            className="p-0 h-auto justify-start text-primary whitespace-normal text-left"
                                                             onClick={() => setIsOpen(false)}
                                                         >
                                                             <Link href={link.href}>{link.text}</Link>
