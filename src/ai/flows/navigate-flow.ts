@@ -123,6 +123,9 @@ const navigateFlow = ai.defineFlow(
   async (input) => {
     const { output } = await prompt(input);
 
+    // DEBUGGING: Log the raw output from the AI to the server console
+    console.log('AI Raw Output:', JSON.stringify(output, null, 2));
+
     if (output?.isFormComplete && output.updatedFormData) {
       try {
         await sendLeadNotification(output.updatedFormData, 'chatbot');
