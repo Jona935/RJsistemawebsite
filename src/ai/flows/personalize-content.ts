@@ -32,7 +32,7 @@ const prompt = ai.definePrompt({
   name: 'personalizeContentPrompt',
   input: {schema: PersonalizeContentInputSchema},
   output: {schema: PersonalizeContentOutputSchema},
-  prompt: `Eres un asistente de IA especializado en conectar las consultas de los usuarios con los servicios más relevantes ofrecidos por JR Servicios Digitales.
+  prompt: `Eres un asistente de IA especializado en conectar las consultas de los usuarios con los servicios más relevantes ofrecidos por JRsistemas.
 
   Basado en la consulta del usuario, identifica y sugiere los servicios más adecuados.
   Explica tu razonamiento para sugerir estos servicios.

@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'JR Servicios Digitales',
+  title: 'JRsistemas',
   description: 'Diseño Web, Automatización y Servicios de TI.',
 };
 

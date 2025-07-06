@@ -8,7 +8,7 @@ export default function About() {
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <div className="space-y-4">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              Sobre JR Servicios Digitales
+              Sobre JRsistemas
             </h2>
             <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               Somos un equipo apasionado de desarrolladores y profesionales de TI dedicados a ayudar a las empresas a prosperar en el mundo digital. Nuestra misión es ofrecer soluciones digitales de alta calidad, innovadoras y confiables que impulsen el crecimiento y la eficiencia.
