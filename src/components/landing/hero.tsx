@@ -92,8 +92,8 @@ export default function Hero() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10 hidden h-10 w-10 bg-background/50 hover:bg-background/75 sm:flex" />
-        <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10 hidden h-10 w-10 bg-background/50 hover:bg-background/75 sm:flex" />
+        <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10 hidden h-10 w-10 bg-background/50 hover:bg-accent sm:flex" />
+        <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10 hidden h-10 w-10 bg-background/50 hover:bg-accent sm:flex" />
       </Carousel>
     </section>
   );
