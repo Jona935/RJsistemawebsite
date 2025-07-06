@@ -14,20 +14,20 @@ import Autoplay from "embla-carousel-autoplay";
 
 const heroSlides = [
   {
-    title: 'Innovative Digital Solutions',
-    description: 'Transforming your ideas into powerful web experiences, streamlined automations, and robust IT infrastructures. We build the future of your business, one line of code at a time.',
+    title: 'Soluciones Digitales Innovadoras',
+    description: 'Transformamos tus ideas en potentes experiencias web, automatizaciones eficientes y robustas infraestructuras de TI. Construimos el futuro de tu negocio, una línea de código a la vez.',
     image: 'https://placehold.co/600x600.png',
     hint: 'abstract digital art',
   },
   {
-    title: 'Expert Web Design Services',
-    description: 'Creating stunning, responsive websites that not only look great but also perform exceptionally. Let us build your online presence.',
+    title: 'Servicios Expertos de Diseño Web',
+    description: 'Creamos sitios web impresionantes y responsivos que no solo se ven geniales, sino que también funcionan excepcionalmente. Permítenos construir tu presencia en línea.',
     image: 'https://placehold.co/600x600.png',
     hint: 'modern website design',
   },
   {
-    title: 'Intelligent Automation',
-    description: 'Boost efficiency and reduce manual workload with our custom automation solutions. We streamline your processes so you can focus on what matters.',
+    title: 'Automatización Inteligente',
+    description: 'Aumenta la eficiencia y reduce la carga de trabajo manual con nuestras soluciones de automatización personalizadas. Optimizamos tus procesos para que puedas concentrarte en lo que importa.',
     image: 'https://placehold.co/600x600.png',
     hint: 'glowing circuit board',
   },
@@ -68,12 +68,12 @@ export default function Hero() {
                     <div className="flex flex-col gap-2 min-[400px]:flex-row">
                       <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
                         <Link href="#contact">
-                          Get a Quote
+                          Obtener Cotización
                           <ArrowRight className="ml-2 h-5 w-5" />
                         </Link>
                       </Button>
                       <Button asChild variant="outline" size="lg">
-                        <Link href="#portfolio">View Our Work</Link>
+                        <Link href="#portfolio">Ver Nuestro Trabajo</Link>
                       </Button>
                     </div>
                   </div>

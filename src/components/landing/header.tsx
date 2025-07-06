@@ -7,10 +7,10 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, CodeXml } from 'lucide-react';
 
 const navLinks = [
-  { name: 'Partners', href: '#partners' },
-  { name: 'Services', href: '#services' },
-  { name: 'Portfolio', href: '#portfolio' },
-  { name: 'About', href: '#about' },
+  { name: 'Socios', href: '#partners' },
+  { name: 'Servicios', href: '#services' },
+  { name: 'Portafolio', href: '#portfolio' },
+  { name: 'Nosotros', href: '#about' },
 ];
 
 export default function Header() {
@@ -32,7 +32,7 @@ export default function Header() {
         </nav>
         <div className="hidden md:block">
           <Button asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
-            <Link href="#contact">Contact Us</Link>
+            <Link href="#contact">Contáctanos</Link>
           </Button>
         </div>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -56,7 +56,7 @@ export default function Header() {
                 ))}
               </nav>
               <Button asChild className="bg-accent hover:bg-accent/90 text-accent-foreground" onClick={() => setIsOpen(false)}>
-                <Link href="#contact">Contact Us</Link>
+                <Link href="#contact">Contáctanos</Link>
               </Button>
             </div>
           </SheetContent>

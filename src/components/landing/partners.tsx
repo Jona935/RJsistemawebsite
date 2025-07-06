@@ -36,10 +36,10 @@ export default function Partners() {
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-            Trusted by Industry Leaders
+            Con la Confianza de Líderes de la Industria
           </h2>
           <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-            We partner with innovative companies to deliver exceptional results and drive digital transformation.
+            Nos asociamos con empresas innovadoras para ofrecer resultados excepcionales e impulsar la transformación digital.
           </p>
         </div>
         <Carousel

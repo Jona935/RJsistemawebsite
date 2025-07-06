@@ -4,18 +4,18 @@ import { Code2, Bot, Server } from 'lucide-react';
 const services = [
   {
     icon: <Code2 className="h-10 w-10 text-primary" />,
-    title: 'Web Design',
-    description: 'We create beautiful, responsive, and high-performing websites that captivate your audience and grow your business. From single-page applications to complex e-commerce platforms.',
+    title: 'Diseño Web',
+    description: 'Creamos sitios web hermosos, responsivos y de alto rendimiento que cautivan a tu audiencia y hacen crecer tu negocio. Desde aplicaciones de una sola página hasta complejas plataformas de comercio electrónico.',
   },
   {
     icon: <Bot className="h-10 w-10 text-primary" />,
-    title: 'Automation',
-    description: 'Streamline your business processes with our intelligent automation solutions. We help you reduce manual tasks, improve efficiency, and free up valuable time for your team.',
+    title: 'Automatización',
+    description: 'Optimiza tus procesos de negocio con nuestras soluciones de automatización inteligente. Te ayudamos a reducir tareas manuales, mejorar la eficiencia y liberar tiempo valioso para tu equipo.',
   },
   {
     icon: <Server className="h-10 w-10 text-primary" />,
-    title: 'IT Services',
-    description: 'Our comprehensive IT services ensure your digital infrastructure is reliable, secure, and scalable. We offer support, maintenance, and consulting to keep your systems running smoothly.',
+    title: 'Servicios de TI',
+    description: 'Nuestros servicios integrales de TI aseguran que tu infraestructura digital sea confiable, segura y escalable. Ofrecemos soporte, mantenimiento y consultoría para mantener tus sistemas funcionando sin problemas.',
   },
 ];
 
@@ -25,10 +25,10 @@ export default function Services() {
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-            Our Services
+            Nuestros Servicios
           </h2>
           <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-            We offer a range of digital services designed to elevate your business and drive success.
+            Ofrecemos una gama de servicios digitales diseñados para elevar tu negocio e impulsar el éxito.
           </p>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

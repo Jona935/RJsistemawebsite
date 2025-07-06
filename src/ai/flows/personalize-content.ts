@@ -12,15 +12,15 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const PersonalizeContentInputSchema = z.object({
-  userInquiry: z.string().describe('The user inquiry from the contact form.'),
+  userInquiry: z.string().describe('La consulta del usuario desde el formulario de contacto.'),
 });
 export type PersonalizeContentInput = z.infer<typeof PersonalizeContentInputSchema>;
 
 const PersonalizeContentOutputSchema = z.object({
   suggestedServices: z
     .array(z.string())
-    .describe('An array of suggested services based on the user inquiry.'),
-  reasoning: z.string().describe('The AI reasoning behind the suggested services.'),
+    .describe('Un arreglo de servicios sugeridos basado en la consulta del usuario.'),
+  reasoning: z.string().describe('La justificación de la IA para los servicios sugeridos.'),
 });
 export type PersonalizeContentOutput = z.infer<typeof PersonalizeContentOutputSchema>;
 
@@ -32,16 +32,16 @@ const prompt = ai.definePrompt({
   name: 'personalizeContentPrompt',
   input: {schema: PersonalizeContentInputSchema},
   output: {schema: PersonalizeContentOutputSchema},
-  prompt: `You are an AI assistant specializing in matching user inquiries with the most relevant services offered by JR Servicios Digitales.
+  prompt: `Eres un asistente de IA especializado en conectar las consultas de los usuarios con los servicios más relevantes ofrecidos por JR Servicios Digitales.
 
-  Based on the user's inquiry, identify and suggest the most suitable services.
-  Explain your reasoning for suggesting these services.
+  Basado en la consulta del usuario, identifica y sugiere los servicios más adecuados.
+  Explica tu razonamiento para sugerir estos servicios.
 
-  User Inquiry: {{{userInquiry}}}
+  Consulta del Usuario: {{{userInquiry}}}
 
-  Available Services: Web Design, Automation, IT Services
+  Servicios Disponibles: Diseño Web, Automatización, Servicios de TI
 
-  Format your response as a JSON object with 'suggestedServices' (an array of service names) and 'reasoning' (your explanation).
+  Formatea tu respuesta como un objeto JSON con 'suggestedServices' (un arreglo de nombres de servicios) y 'reasoning' (tu explicación).
 `,
 });
 

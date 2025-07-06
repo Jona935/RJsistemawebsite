@@ -38,9 +38,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
 const formSchema = z.object({
-  name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
-  email: z.string().email({ message: 'Please enter a valid email address.' }),
-  phone: z.string().min(1, { message: 'Phone number is required.' }),
+  name: z.string().min(2, { message: 'El nombre debe tener al menos 2 caracteres.' }),
+  email: z.string().email({ message: 'Por favor, introduce una dirección de correo electrónico válida.' }),
+  phone: z.string().min(1, { message: 'El número de teléfono es obligatorio.' }),
   company: z.string().optional(),
   service: z.string().optional(),
   message: z.string().optional(),
@@ -69,14 +69,14 @@ export default function Contact() {
   async function onSubmit(values: FormValues) {
     setLoading(true);
     try {
-      let userInquiry = `The user's message is: "${values.message || 'No message provided.'}".`;
+      let userInquiry = `El mensaje del usuario es: "${values.message || 'No se proporcionó ningún mensaje.'}".`;
       if (values.service) {
-        userInquiry = `The user is interested in the "${values.service}" service. ` + userInquiry;
+        userInquiry = `El usuario está interesado en el servicio "${values.service}". ` + userInquiry;
       }
       if (values.company) {
-          userInquiry = `The user works at ${values.company}. ` + userInquiry;
+          userInquiry = `El usuario trabaja en ${values.company}. ` + userInquiry;
       }
-      userInquiry = `Contact details: Name: ${values.name}, Email: ${values.email}, Phone: ${values.phone}. ` + userInquiry;
+      userInquiry = `Detalles de contacto: Nombre: ${values.name}, Email: ${values.email}, Teléfono: ${values.phone}. ` + userInquiry;
 
       const aiResult = await personalizeContent({ userInquiry });
       setResult(aiResult);
@@ -85,8 +85,8 @@ export default function Contact() {
     } catch (error) {
       console.error('Error personalizing content:', error);
       toast({
-        title: 'An Error Occurred',
-        description: 'We could not get a suggestion for you. Please try again later.',
+        title: 'Ocurrió un Error',
+        description: 'No pudimos obtener una sugerencia para ti. Por favor, inténtalo de nuevo más tarde.',
         variant: 'destructive',
       });
     } finally {
@@ -99,9 +99,9 @@ export default function Contact() {
       <div className="container px-4 md:px-6">
         <div className="grid items-center justify-center gap-4 text-center">
           <div className="space-y-3">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">Contact Us</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">Contáctanos</h2>
             <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Have a project in mind? Fill out the form below to get in touch. Our AI assistant will analyze your request to suggest the best services for you.
+              ¿Tienes un proyecto en mente? Completa el formulario a continuación para ponerte en contacto. Nuestro asistente de IA analizará tu solicitud para sugerirte los mejores servicios para ti.
             </p>
           </div>
           <div className="mx-auto w-full max-w-lg">
@@ -114,9 +114,9 @@ export default function Contact() {
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Name</FormLabel>
+                          <FormLabel>Nombre</FormLabel>
                           <FormControl>
-                            <Input placeholder="John Doe" {...field} />
+                            <Input placeholder="Juan Pérez" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -127,9 +127,9 @@ export default function Contact() {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email</FormLabel>
+                          <FormLabel>Correo Electrónico</FormLabel>
                           <FormControl>
-                            <Input placeholder="john.doe@example.com" {...field} />
+                            <Input placeholder="juan.perez@example.com" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -140,7 +140,7 @@ export default function Contact() {
                       name="phone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Phone</FormLabel>
+                          <FormLabel>Teléfono</FormLabel>
                           <FormControl>
                             <Input placeholder="(123) 456-7890" {...field} />
                           </FormControl>
@@ -153,9 +153,9 @@ export default function Contact() {
                       name="company"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Company (Optional)</FormLabel>
+                          <FormLabel>Empresa (Opcional)</FormLabel>
                           <FormControl>
-                            <Input placeholder="Acme Inc." {...field} />
+                            <Input placeholder="Tu Empresa" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -166,17 +166,17 @@ export default function Contact() {
                       name="service"
                       render={({ field }) => (
                         <FormItem className="sm:col-span-2">
-                          <FormLabel>Service of Interest (Optional)</FormLabel>
+                          <FormLabel>Servicio de Interés (Opcional)</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder="Select a service" />
+                                <SelectValue placeholder="Selecciona un servicio" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="Web Design">Web Design</SelectItem>
-                              <SelectItem value="Automation">Automation</SelectItem>
-                              <SelectItem value="IT Services">IT Services</SelectItem>
+                              <SelectItem value="Diseño Web">Diseño Web</SelectItem>
+                              <SelectItem value="Automatización">Automatización</SelectItem>
+                              <SelectItem value="Servicios de TI">Servicios de TI</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -188,10 +188,10 @@ export default function Contact() {
                       name="message"
                       render={({ field }) => (
                         <FormItem className="sm:col-span-2">
-                          <FormLabel>Message (Optional)</FormLabel>
+                          <FormLabel>Mensaje (Opcional)</FormLabel>
                           <FormControl>
                             <Textarea
-                              placeholder="Tell us about your project or what you need help with..."
+                              placeholder="Cuéntanos sobre tu proyecto o en qué necesitas ayuda..."
                               className="min-h-[100px]"
                               {...field}
                             />
@@ -206,7 +206,7 @@ export default function Contact() {
                       ) : (
                         <Sparkles className="mr-2 h-4 w-4" />
                       )}
-                      Get AI-Powered Suggestions
+                      Obtener Sugerencias con IA
                     </Button>
                   </form>
                 </Form>
@@ -221,16 +221,16 @@ export default function Contact() {
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2 font-headline">
               <Sparkles className="text-accent" />
-              Here are our suggestions for you!
+              ¡Aquí tienes nuestras sugerencias para ti!
             </AlertDialogTitle>
             <AlertDialogDescription>
-              Based on your inquiry, we believe the following services would be a great fit for your project.
+              Basado en tu consulta, creemos que los siguientes servicios serían ideales para tu proyecto.
             </AlertDialogDescription>
           </AlertDialogHeader>
           {result && (
             <div className="space-y-4">
               <div>
-                <h3 className="font-semibold mb-2">Suggested Services:</h3>
+                <h3 className="font-semibold mb-2">Servicios Sugeridos:</h3>
                 <div className="flex flex-wrap gap-2">
                   {result.suggestedServices.map((service) => (
                     <Badge key={service} variant="default" className="bg-primary text-primary-foreground">{service}</Badge>
@@ -238,13 +238,13 @@ export default function Contact() {
                 </div>
               </div>
               <div>
-                <h3 className="font-semibold mb-2">Reasoning:</h3>
+                <h3 className="font-semibold mb-2">Justificación:</h3>
                 <p className="text-sm text-muted-foreground">{result.reasoning}</p>
               </div>
             </div>
           )}
           <AlertDialogFooter>
-            <AlertDialogAction>Got it!</AlertDialogAction>
+            <AlertDialogAction>¡Entendido!</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

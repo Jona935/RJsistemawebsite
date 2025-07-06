@@ -8,13 +8,13 @@ export default function About() {
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <div className="space-y-4">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              About JR Servicios Digitales
+              Sobre JR Servicios Digitales
             </h2>
             <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              We are a passionate team of developers and IT professionals dedicated to helping businesses thrive in the digital world. Our mission is to deliver high-quality, innovative, and reliable digital solutions that drive growth and efficiency.
+              Somos un equipo apasionado de desarrolladores y profesionales de TI dedicados a ayudar a las empresas a prosperar en el mundo digital. Nuestra misión es ofrecer soluciones digitales de alta calidad, innovadoras y confiables que impulsen el crecimiento y la eficiencia.
             </p>
             <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              With a focus on cutting-edge technology and customer-centric strategies, we tailor our services to meet the unique needs of each client. From stunning web designs to intelligent automation and robust IT support, we are your trusted partner in digital transformation.
+              Con un enfoque en tecnología de vanguardia y estrategias centradas en el cliente, adaptamos nuestros servicios para satisfacer las necesidades únicas de cada cliente. Desde diseños web impresionantes hasta automatización inteligente y soporte de TI robusto, somos tu socio de confianza en la transformación digital.
             </p>
           </div>
           <div className="flex items-center justify-center">
