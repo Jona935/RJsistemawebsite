@@ -129,7 +129,7 @@ export default function Chatbot() {
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div className="flex items-center gap-2">
                                 <Sparkles className="h-5 w-5 text-primary" />
-                                <CardTitle className="text-lg font-headline">Asistente</Title>
+                                <CardTitle className="text-lg font-headline">Asistente</CardTitle>
                             </div>
                         </CardHeader>
                         <CardContent className="flex-grow p-4 overflow-y-auto">
