@@ -17,6 +17,13 @@ type Message = {
     links?: NavigateOutput['suggestedLinks'];
 };
 
+const calloutMessages = [
+    '¿Necesitas ayuda?',
+    '¿Tienes una idea? ¡Te ayudamos!',
+    '¡Hagamos tu proyecto realidad!',
+    'Puedo guiarte por el sitio.',
+];
+
 export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
@@ -26,10 +33,21 @@ export default function Chatbot() {
     const [isLoading, setIsLoading] = useState(false);
     const { toast } = useToast();
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
+    
+    useEffect(() => {
+        if (isOpen) return;
+
+        const interval = setInterval(() => {
+            setCurrentMessageIndex((prevIndex) => (prevIndex + 1) % calloutMessages.length);
+        }, 5000); // Change message every 5 seconds
+
+        return () => clearInterval(interval);
+    }, [isOpen]);
 
     useEffect(() => {
         scrollToBottom();
@@ -77,7 +95,15 @@ export default function Chatbot() {
 
     return (
         <>
-            <div className="fixed bottom-6 right-6 z-50">
+            <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
+                 {!isOpen && (
+                   <div key={currentMessageIndex} className="w-max max-w-[220px] animate-in fade-in-0 slide-in-from-bottom-2">
+                       <div className="relative rounded-lg border bg-background p-3 shadow-lg">
+                           <p className="text-sm text-center text-foreground">{calloutMessages[currentMessageIndex]}</p>
+                           <div className="absolute bottom-0 right-5 h-3 w-3 translate-y-1/2 rotate-45 transform border-b border-r border-border bg-background"></div>
+                       </div>
+                   </div>
+                )}
                 <Button
                     variant="default"
                     size="icon"
@@ -95,7 +121,7 @@ export default function Chatbot() {
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div className="flex items-center gap-2">
                                 <Sparkles className="h-5 w-5 text-primary" />
-                                <CardTitle className="text-lg font-headline">Asistente</CardTitle>
+                                <CardTitle className="text-lg font-headline">Asistente</Title>
                             </div>
                         </CardHeader>
                         <CardContent className="flex-grow p-4 overflow-y-auto">
