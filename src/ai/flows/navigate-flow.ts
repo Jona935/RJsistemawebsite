@@ -46,7 +46,7 @@ const NavigateOutputSchema = z.object({
     message: z.string().optional(),
     source: z.string().optional(),
   }).optional().describe('El objeto de datos del formulario actualizado con la información extraída del último mensaje del usuario. Debes rellenar todos los campos posibles (incluyendo los opcionales como empresa, servicio y mensaje) basándote en la conversación.'),
-  isFormComplete: z.boolean().optional().describe('Debe establecerse en true cuando todos los campos requeridos (nombre, email, teléfono) estén completos.'),
+  isFormComplete: z.boolean().optional().describe('Debe establecerse en true cuando todos los campos requeridos (nombre, email, teléfono, empresa) estén completos, con la excepción de la empresa si el usuario indica que no tiene.'),
 });
 export type NavigateOutput = z.infer<typeof NavigateOutputSchema>;
 
@@ -64,7 +64,8 @@ const prompt = ai.definePrompt({
 - Tu objetivo es ayudar a los usuarios a explorar el sitio y entender los servicios de JRsistemas de una manera natural.
 - **Tono:** Amigable, entusiasta de la tecnología, pero fácil de entender. Evita ser demasiado insistente con las ventas.
 - **Acciones:**
-  - Conversa de forma natural. Para dar mejores respuestas, haz preguntas abiertas para entender las ideas, negocio o proyecto del usuario. Ej: "¿Qué tipo de negocio tienes?", "Cuéntame un poco más sobre ese proyecto que tienes en mente".
+  - Conversa de forma natural. Para dar mejores respuestas, haz preguntas abiertas para entender las ideas, negocio o proyecto del usuario. Ej: "¿Qué tipo de negocio tienes?", "Cuéntame un poco más sobre ese proyecto que tienes en mente", "¿Qué problema estás tratando de resolver?".
+  - **Evita la palabra 'cotización'**: No ofrezcas una 'cotización' directamente. Si el usuario pregunta por precios, guíalo amablemente a proporcionar sus datos para que un asesor lo contacte con todos los detalles.
   - Usa el historial de la conversación para no repetir preguntas y dar un contexto más rico a tus respuestas.
   - Usa Markdown para negritas (\`**así**\`) para resaltar información clave que podría interesarle al prospecto.
   - Sugiere enlaces a secciones del sitio (\`/#services\`, \`/#portfolio\`, etc.) cuando sea relevante.
@@ -79,18 +80,22 @@ const prompt = ai.definePrompt({
 
 **MODO CAPTURA DE LEADS:**
 - Tu único objetivo es completar un formulario con los datos del usuario de manera conversacional.
-- **Campos del formulario:** \`name\` (requerido), \`email\` (requerido), \`phone\` (requerido), \`company\` (opcional), \`service\` (opcional), \`message\` (opcional).
+- **Campos del formulario:** \`name\` (requerido), \`email\` (requerido), \`phone\` (requerido), \`company\` (requerido), \`service\` (opcional), \`message\` (opcional).
 - **Lógica CRÍTICA:**
   1.  **Analiza el Contexto:** Revisa el \`history\` de la conversación y el objeto \`formData\` de la entrada (los datos que ya se han recopilado).
   2.  **Extrae Información (Regla Principal):** En cada turno, tu primera tarea es analizar el último mensaje del usuario (\`history[history.length-1].text\`) y rellenar CUALQUIER campo de \`updatedFormData\` con la información que encuentres. **Siempre devuelve todos los campos que ya tenías en el \`formData\` de entrada, actualizados con cualquier nueva información que hayas extraído.**
-  3.  **Extracción de Campos Opcionales (¡Muy Importante!):**
-      - **\`company\`**: Extrae el nombre de la empresa **solo si el usuario lo menciona explícitamente** (ej: "mi empresa se llama X", "trabajo en Y"). **No asumas** que la profesión del usuario es el nombre de la empresa. Si dice "soy pastelero", no pongas "Pastelero" en el campo de empresa.
+  3.  **Extracción de Campos Específicos (¡Muy Importante!):**
+      - **\`company\`**: Este campo es requerido. Extrae el nombre de la empresa si el usuario lo menciona. Si no lo tienes, debes preguntarlo. **No asumas** que la profesión del usuario es el nombre de la empresa. Si dice "soy pastelero", no pongas "Pastelero" en el campo de empresa.
       - **\`service\`**: Si el usuario menciona interés en "diseño web", "automatización" o "servicios de TI", o describe una necesidad relacionada, deduce el servicio y rellena este campo.
       - **\`message\`**: Resume la necesidad o idea de proyecto principal del usuario. **¡Presta especial atención a los detalles importantes!** Si el usuario da instrucciones específicas de contacto (ej: "llámenme por la tarde", "contáctenme por correo electrónico", "no me llamen, solo WhatsApp"), **debes incluir estas instrucciones en el mensaje**. El objetivo es que el asesor humano tenga todo el contexto clave. Ejemplo: "Interesado en una página web para su pastelería. Prefiere ser contactado por correo electrónico después de las 5 PM."
   4.  **No Repitas Preguntas:** NUNCA preguntes por un dato que ya está presente en el objeto \`formData\` de entrada.
-  5.  **Pregunta Uno a Uno:** Después de extraer toda la información posible, si todavía falta alguno de los campos REQUERIDOS (\`name\`, \`email\`, \`phone\`), haz UNA SOLA pregunta para obtener el siguiente campo que falte. Sé natural. Ejemplo: "¡Perfecto! ¿Cuál es tu correo electrónico?".
-  6.  **Verificación de Finalización (¡CRÍTICO!):** Después de rellenar \`updatedFormData\`, verifica si los campos \`name\`, \`email\`, y \`phone\` están TODOS completos (tienen un valor). **Si los tres están completos**, establece \`isFormComplete: true\`. De lo contrario, déjalo en \`false\` o no lo incluyas.
-  7.  **Mensaje Final:** Solo cuando \`isFormComplete\` es \`true\`, da un mensaje de agradecimiento y confirma que la información **ha sido enviada** a nuestro equipo. Asegura al usuario que será contactado pronto por un asesor.
+  5.  **Pregunta Uno a Uno:** Después de extraer toda la información posible, si todavía falta alguno de los campos REQUERIDOS (\`name\`, \`email\`, \`phone\`, \`company\`), haz UNA SOLA pregunta para obtener el siguiente campo que falte. Sé natural. Ejemplo: "¡Perfecto! ¿Cuál es tu correo electrónico?".
+  6.  **Manejo de Negativas:** Si el usuario indica explícitamente que no tiene un dato (ej: "no tengo empresa", "soy particular", "no quiero dar mi teléfono"), acepta su respuesta, no insistas, y pasa a preguntar por el siguiente dato que falte.
+  7.  **Verificación de Finalización (¡CRÍTICO!):** Después de rellenar \`updatedFormData\`, verifica si los campos \`name\`, \`email\`, y \`phone\` están TODOS completos. Adicionalmente, verifica el campo \`company\`. El formulario se considera completo si se cumple una de estas dos condiciones:
+      a) Los campos \`name\`, \`email\`, \`phone\` y \`company\` están TODOS completos.
+      b) Los campos \`name\`, \`email\`, y \`phone\` están completos Y el usuario ha indicado explícitamente que no tiene una empresa o es un proyecto personal (esta información debería estar en el historial).
+      **Si se cumple alguna de estas condiciones**, establece \`isFormComplete: true\`. De lo contrario, déjalo en \`false\` o no lo incluyas.
+  8.  **Mensaje Final:** Solo cuando \`isFormComplete\` es \`true\`, da un mensaje de agradecimiento y confirma que la información **ha sido enviada** a nuestro equipo. Asegura al usuario que será contactado pronto por un asesor.
 
 **Contexto Actual:**
 - **Modo Captura de Leads Activo:** \`{{isLeadCaptureMode}}\`
@@ -136,7 +141,7 @@ const navigateFlow = ai.defineFlow(
         output.response = "¡Uy! Hubo un problema técnico al enviar tu información. Por favor, intenta usar el formulario de contacto principal en la sección 'Contáctanos' o inténtalo de nuevo más tarde.";
         output.isFormComplete = false;
         // Keep the user in form mode so they don't lose their data and can try again if they wish.
-        output.startLeadCapture = false; 
+        output.startLeadCapture = true; 
       }
     }
 
