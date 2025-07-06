@@ -15,6 +15,7 @@ type Message = {
     sender: 'bot' | 'user';
     text?: string;
     links?: NavigateOutput['suggestedLinks'];
+    timestamp: string;
 };
 
 const calloutMessages = [
@@ -26,9 +27,7 @@ const calloutMessages = [
 
 export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
-    const [messages, setMessages] = useState<Message[]>([
-        { id: 1, sender: 'bot', text: '¡Hola! Soy tu asistente de navegación. ¿Cómo puedo ayudarte a encontrar lo que buscas en JRsistemas?' }
-    ]);
+    const [messages, setMessages] = useState<Message[]>([]);
     const [inputValue, setInputValue] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const { toast } = useToast();
@@ -40,6 +39,17 @@ export default function Chatbot() {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
     
+    useEffect(() => {
+        setMessages([
+            { 
+                id: 1, 
+                sender: 'bot', 
+                text: '¡Hola! Soy tu asistente de navegación. ¿Cómo puedo ayudarte a encontrar lo que buscas en JRsistemas?',
+                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+            }
+        ]);
+    }, []);
+
     useEffect(() => {
         if (isOpen || !showCallouts) return;
 
@@ -62,6 +72,7 @@ export default function Chatbot() {
             id: Date.now(),
             sender: 'user',
             text: inputValue,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         };
         setMessages((prev) => [...prev, userMessage]);
         setInputValue('');
@@ -74,6 +85,7 @@ export default function Chatbot() {
                 sender: 'bot',
                 text: result.response,
                 links: result.suggestedLinks,
+                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             };
             setMessages((prev) => [...prev, botMessage]);
         } catch (error) {
@@ -87,6 +99,7 @@ export default function Chatbot() {
                 id: Date.now() + 1,
                 sender: 'bot',
                 text: 'Lo siento, estoy teniendo problemas para conectarme. Por favor, intenta más tarde.',
+                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             };
             setMessages((prev) => [...prev, errorMessage]);
         } finally {
@@ -144,30 +157,36 @@ export default function Chatbot() {
                                                 <Bot className="h-4 w-4" />
                                             </div>
                                         )}
-                                        <div
-                                            className={cn('max-w-[80%] rounded-lg px-3 py-2 text-sm break-words', message.sender === 'user'
-                                                    ? 'bg-muted text-muted-foreground'
-                                                    : 'bg-card border'
+                                        <div className={cn("flex flex-col gap-1 max-w-[80%]", message.sender === 'user' ? 'items-end' : 'items-start')}>
+                                            <div
+                                                className={cn('w-fit max-w-full rounded-lg px-3 py-2 text-sm break-words', message.sender === 'user'
+                                                        ? 'bg-muted text-muted-foreground'
+                                                        : 'bg-card border'
+                                                    )}
+                                            >
+                                                {message.text}
+                                                {message.links && message.links.length > 0 && (
+                                                    <div className="mt-2 flex flex-col gap-1">
+                                                        {message.links.map((link, index) => (
+                                                            <Button
+                                                                key={index}
+                                                                asChild
+                                                                variant="link"
+                                                                size="sm"
+                                                                className="p-0 h-auto justify-start text-primary whitespace-normal text-left"
+                                                                onClick={() => setIsOpen(false)}
+                                                            >
+                                                                <Link href={link.href}>{link.text}</Link>
+                                                            </Button>
+                                                        ))}
+                                                    </div>
                                                 )}
-                                        >
-                                            {message.text}
-                                            {message.links && message.links.length > 0 && (
-                                                <div className="mt-2 flex flex-col gap-1">
-                                                    {message.links.map((link, index) => (
-                                                        <Button
-                                                            key={index}
-                                                            asChild
-                                                            variant="link"
-                                                            size="sm"
-                                                            className="p-0 h-auto justify-start text-primary whitespace-normal text-left"
-                                                            onClick={() => setIsOpen(false)}
-                                                        >
-                                                            <Link href={link.href}>{link.text}</Link>
-                                                        </Button>
-                                                    ))}
-                                                </div>
-                                            )}
+                                            </div>
+                                            <span className="text-xs text-muted-foreground/60 px-1">
+                                                {message.timestamp}
+                                            </span>
                                         </div>
+
                                         {message.sender === 'user' && (
                                             <div className="bg-muted rounded-full p-2">
                                                 <User className="h-4 w-4" />
