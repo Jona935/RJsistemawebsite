@@ -182,7 +182,7 @@ export default function Chatbot() {
                                                     <ReactMarkdown
                                                         components={{
                                                             p: ({...props}) => <p className="mb-2 last:mb-0" {...props} />,
-                                                            strong: ({...props}) => <strong className="font-bold" {...props} />,
+                                                            strong: ({...props}) => <strong className="font-bold text-accent" {...props} />,
                                                         }}
                                                     >
                                                         {message.text}
@@ -196,7 +196,7 @@ export default function Chatbot() {
                                                             <Button
                                                                 key={index}
                                                                 asChild
-                                                                variant="secondary"
+                                                                variant="outline"
                                                                 className="h-auto w-full justify-start whitespace-normal text-left px-3 py-2"
                                                                 onClick={() => setIsOpen(false)}
                                                             >
