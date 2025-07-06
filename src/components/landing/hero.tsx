@@ -68,7 +68,7 @@ export default function Hero() {
                     <div className="flex flex-col gap-2 min-[400px]:flex-row">
                       <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
                         <Link href="#contact">
-                          Obtener Cotización
+                          Consultoría Gratis
                           <ArrowRight className="ml-2 h-5 w-5" />
                         </Link>
                       </Button>
