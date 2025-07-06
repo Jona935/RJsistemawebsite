@@ -145,7 +145,9 @@ export default function Chatbot() {
                     <Card className="w-80 h-[500px] flex flex-col shadow-2xl bg-background/80 backdrop-blur-md">
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div className="flex items-center gap-2">
-                                <Bot className="h-5 w-5 text-primary" />
+                                <div className="rounded-full p-1 text-primary-foreground bg-gradient-to-br from-primary via-accent to-primary">
+                                  <Bot className="h-5 w-5" />
+                                </div>
                                 <CardTitle className="text-lg font-headline">Asistente JR</CardTitle>
                             </div>
                         </CardHeader>
