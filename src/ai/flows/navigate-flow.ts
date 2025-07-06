@@ -118,7 +118,7 @@ const navigateFlow = ai.defineFlow(
 
     if (output?.isFormComplete && output.updatedFormData) {
       try {
-        await sendLeadNotification(output.updatedFormData);
+        await sendLeadNotification(output.updatedFormData, 'chatbot');
       } catch (error) {
         console.error('Failed to send lead notification via WhatsApp:', error);
         // Inform the user about the failure and revert form state.

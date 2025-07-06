@@ -57,7 +57,7 @@ export default function Contact() {
   async function onSubmit(values: FormValues) {
     setIsSubmitting(true);
     try {
-      await sendLeadNotification(values);
+      await sendLeadNotification(values, 'form');
       toast({
         title: '¡Mensaje Enviado!',
         description: 'Gracias por contactarnos. Nuestro equipo te responderá pronto.',

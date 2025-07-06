@@ -8,10 +8,11 @@ type LeadData = Exclude<NavigateInput['formData'], undefined>;
 /**
  * Sends a lead notification to the business's WhatsApp number using a Meta Graph API template.
  * @param leadData The collected lead data (name, email, phone, etc.).
+ * @param source The source of the lead ('chatbot' or 'form').
  * @returns A promise that resolves with the API response on success.
  * @throws An error if configuration is missing or the API call fails.
  */
-export async function sendLeadNotification(leadData: LeadData) {
+export async function sendLeadNotification(leadData: LeadData, source: 'chatbot' | 'form') {
   const accessToken = process.env.META_ACCESS_TOKEN;
   const phoneNumberId = process.env.META_PHONE_NUMBER_ID;
   const toPhoneNumber = process.env.BUSINESS_WHATSAPP_NUMBER;
@@ -22,6 +23,10 @@ export async function sendLeadNotification(leadData: LeadData) {
   }
 
   const url = `https://graph.facebook.com/v22.0/${phoneNumberId}/messages`;
+  
+  const sourceText = source === 'chatbot' 
+    ? 'Asistente de IA del Sitio Web' 
+    : 'Formulario de Contacto';
 
   // The payload uses a pre-approved template named 'lead_notification'.
   // This template is expected to have a body with 7 parameters.
@@ -45,7 +50,7 @@ export async function sendLeadNotification(leadData: LeadData) {
     },
     {
       type: 'text',
-      text: 'Asistente de IA del Sitio Web', // 5th parameter: How they found us.
+      text: sourceText, // 5th parameter: How they found us.
     },
     {
       type: 'text',
