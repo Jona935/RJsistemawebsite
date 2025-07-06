@@ -8,10 +8,10 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
 
 const navLinks = [
-  { name: 'Socios', href: '#partners' },
-  { name: 'Servicios', href: '#services' },
-  { name: 'Portafolio', href: '#portfolio' },
-  { name: 'Nosotros', href: '#about' },
+  { name: 'Socios', href: '/#partners' },
+  { name: 'Servicios', href: '/#services' },
+  { name: 'Portafolio', href: '/#portfolio' },
+  { name: 'Nosotros', href: '/#about' },
 ];
 
 export default function Header() {
@@ -20,7 +20,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-        <Link href="#" className="flex items-center">
+        <Link href="/" className="flex items-center">
           <Image
             src="/logo.svg"
             alt="JRsistemas Logo"
@@ -44,7 +44,7 @@ export default function Header() {
         </nav>
         <div className="hidden md:block">
           <Button asChild variant="accent">
-            <Link href="#contact">Contáctanos</Link>
+            <Link href="/#contact">Contáctanos</Link>
           </Button>
         </div>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -56,7 +56,7 @@ export default function Header() {
           </SheetTrigger>
           <SheetContent side="right">
             <div className="grid gap-6 p-6">
-              <Link href="#" className="flex items-center" onClick={() => setIsOpen(false)}>
+              <Link href="/" className="flex items-center" onClick={() => setIsOpen(false)}>
                 <Image
                   src="/logo.svg"
                   alt="JRsistemas Logo"
@@ -80,7 +80,7 @@ export default function Header() {
                 ))}
               </nav>
               <Button asChild variant="accent" onClick={() => setIsOpen(false)}>
-                <Link href="#contact">Contáctanos</Link>
+                <Link href="/#contact">Contáctanos</Link>
               </Button>
             </div>
           </SheetContent>
