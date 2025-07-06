@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
-import { Code2, Bot, Server, CheckCircle, ArrowLeft } from 'lucide-react';
+import { Code2, Bot, Server, CheckCircle, ArrowLeft, ArrowRight } from 'lucide-react';
 import Header from '@/components/landing/header';
 import Footer from '@/components/landing/footer';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -148,12 +148,12 @@ export default function ServicePage({ params }: ServicePageProps) {
                 </div>
 
                 <div className="lg:col-span-2">
-                    <Card className="sticky top-24">
+                    <Card className="sticky top-24 flex flex-col">
                         <CardHeader>
                             <CardTitle>Características Clave</CardTitle>
                             <CardDescription>Lo que incluye nuestro servicio de {service.title}.</CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-4">
+                        <CardContent className="space-y-4 flex-grow">
                             {service.features.map((feature) => (
                                 <div key={feature.title} className="flex items-start gap-3">
                                     <CheckCircle className="h-5 w-5 mt-1 text-primary shrink-0" />
@@ -164,6 +164,14 @@ export default function ServicePage({ params }: ServicePageProps) {
                                 </div>
                             ))}
                         </CardContent>
+                        <CardFooter>
+                            <Button asChild variant="accent" className="w-full">
+                                <Link href="/#contact">
+                                    Solicitar Consultoría
+                                    <ArrowRight className="ml-2 h-4 w-4" />
+                                </Link>
+                            </Button>
+                        </CardFooter>
                     </Card>
                 </div>
             </div>
