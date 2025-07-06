@@ -184,7 +184,7 @@ export default function Contact() {
                     />
                     <Button type="submit" variant="default" className="w-full sm:col-span-2">
                       <Send className="mr-2 h-4 w-4" />
-                      Enviar por WhatsApp
+                      Enviar
                     </Button>
                   </form>
                 </Form>
