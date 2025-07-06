@@ -6,7 +6,7 @@ import type { NavigateInput } from '@/ai/flows/navigate-flow';
 type LeadData = Exclude<NavigateInput['formData'], undefined>;
 
 /**
- * Sends a lead notification to the business's WhatsApp number using the Meta Graph API.
+ * Sends a lead notification to the business's WhatsApp number using a Meta Graph API template.
  * @param leadData The collected lead data (name, email, phone, etc.).
  * @returns A promise that resolves with the API response on success.
  * @throws An error if configuration is missing or the API call fails.
@@ -21,36 +21,52 @@ export async function sendLeadNotification(leadData: LeadData) {
     throw new Error('Server configuration error: WhatsApp credentials missing.');
   }
 
-  // Use a recent, stable version of the Graph API.
   const url = `https://graph.facebook.com/v20.0/${phoneNumberId}/messages`;
 
-  const messageParts = [
-    `*Nuevo Lead de JRsistemas*`,
+  // Dynamically build the lead details string.
+  // This string will be passed as a single parameter to the WhatsApp template.
+  // This approach allows for optional fields without needing a complex template structure.
+  const leadDetailsParts = [
     `*Nombre:* ${leadData.name || 'No proporcionado'}`,
     `*Email:* ${leadData.email || 'No proporcionado'}`,
     `*Teléfono:* ${leadData.phone || 'No proporcionado'}`,
   ];
 
   if (leadData.company) {
-    messageParts.push(`*Empresa:* ${leadData.company}`);
+    leadDetailsParts.push(`*Empresa:* ${leadData.company}`);
   }
   if (leadData.service) {
-    messageParts.push(`*Servicio de Interés:* ${leadData.service}`);
+    leadDetailsParts.push(`*Servicio de Interés:* ${leadData.service}`);
   }
   if (leadData.message) {
-    messageParts.push(`*Mensaje:* ${leadData.message}`);
+    leadDetailsParts.push(`*Mensaje:* ${leadData.message}`);
   }
 
-  const messageBody = messageParts.join('\n');
+  const leadDetails = leadDetailsParts.join('\n');
   
-  // A standard text message is used for notifications to a business-controlled number.
-  // This avoids reliance on pre-approved templates for this internal notification flow.
+  // The payload uses a pre-approved template named 'lead_notification'.
+  // This template is expected to have a body with one parameter (e.g., "Nuevo Lead:\n\n{{1}}")
+  // to accommodate the dynamically generated lead details.
   const payload = {
     messaging_product: 'whatsapp',
     to: toPhoneNumber,
-    type: 'text',
-    text: {
-      body: messageBody,
+    type: 'template',
+    template: {
+      name: 'lead_notification',
+      language: {
+        code: 'es_mx',
+      },
+      components: [
+        {
+          type: 'body',
+          parameters: [
+            {
+              type: 'text',
+              text: leadDetails,
+            },
+          ],
+        },
+      ],
     },
   };
 
