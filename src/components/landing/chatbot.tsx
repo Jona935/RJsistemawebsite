@@ -141,7 +141,7 @@ export default function Chatbot() {
                                         className={cn('flex items-start gap-3', message.sender === 'user' ? 'justify-end' : '')}
                                     >
                                         {message.sender === 'bot' && (
-                                            <div className="bg-primary rounded-full p-2 text-primary-foreground">
+                                            <div className="rounded-full p-2 text-primary-foreground bg-gradient-to-br from-primary via-accent to-primary">
                                                 <Bot className="h-4 w-4" />
                                             </div>
                                         )}
@@ -178,8 +178,8 @@ export default function Chatbot() {
                                 ))}
                                 {isLoading && (
                                     <div className="flex items-start gap-3">
-                                        <div className="bg-primary rounded-full p-2 text-primary-foreground">
-                                            <Bot className="h-4 w-4" />
+                                        <div className="rounded-full p-2 text-primary-foreground bg-gradient-to-br from-primary via-accent to-primary">
+                                            <Loader2 className="h-4 w-4 animate-spin" />
                                         </div>
                                         <div className="max-w-[80%] rounded-lg px-3 py-2 text-sm bg-card border">
                                             <Loader2 className="h-4 w-4 animate-spin" />
