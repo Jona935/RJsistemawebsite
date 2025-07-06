@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
+import Chatbot from '@/components/landing/chatbot';
 
 export const metadata: Metadata = {
   title: 'JRsistemas',
@@ -22,8 +23,11 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-body antialiased">{children}
-      <Toaster /></body>
+      <body className="font-body antialiased">
+        {children}
+        <Chatbot />
+        <Toaster />
+      </body>
     </html>
   );
 }
