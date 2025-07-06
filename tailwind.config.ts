@@ -77,20 +77,15 @@ export default {
             height: '0',
           },
         },
-        'border-pulse': {
-          '0%, 100%': { boxShadow: '0 0 0 0px hsl(var(--accent) / 0.7)' },
-          '50%': { boxShadow: '0 0 0 10px hsl(var(--accent) / 0)' },
-        },
-        'icon-pulse': {
-          '0%, 100%': { filter: 'drop-shadow(0 0 2px hsl(var(--accent)))' },
-          '50%': { filter: 'drop-shadow(0 0 5px hsl(var(--accent))) drop-shadow(0 0 10px hsl(var(--accent)))' },
+        'shine': {
+          'from': { backgroundPosition: '200% 0' },
+          'to': { backgroundPosition: '-200% 0' },
         },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'border-pulse': 'border-pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'icon-pulse': 'icon-pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'shine': 'shine 4s linear infinite',
       },
     },
   },

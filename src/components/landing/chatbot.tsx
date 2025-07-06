@@ -107,10 +107,10 @@ export default function Chatbot() {
                 <Button
                     variant="default"
                     size="icon"
-                    className="rounded-full w-14 h-14 shadow-lg animate-border-pulse"
+                    className="rounded-full w-14 h-14 shadow-lg bg-[linear-gradient(110deg,hsl(var(--primary)),45%,hsl(var(--accent)),55%,hsl(var(--primary)))] bg-[length:200%_100%] animate-shine"
                     onClick={() => setIsOpen(!isOpen)}
                 >
-                    {isOpen ? <X className="h-6 w-6" /> : <Bot className="h-6 w-6 animate-icon-pulse" />}
+                    {isOpen ? <X className="h-6 w-6" /> : <Bot className="h-6 w-6" />}
                     <span className="sr-only">Abrir chat de ayuda</span>
                 </Button>
             </div>
