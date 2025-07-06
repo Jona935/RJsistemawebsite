@@ -23,30 +23,40 @@ export async function sendLeadNotification(leadData: LeadData) {
 
   const url = `https://graph.facebook.com/v22.0/${phoneNumberId}/messages`;
 
-  // Dynamically build the lead details string.
-  // This string will be passed as a single parameter to the WhatsApp template.
-  // This approach allows for optional fields without needing a complex template structure.
-  const leadDetailsParts = [
-    `*Nombre:* ${leadData.name || 'No proporcionado'}`,
-    `*Email:* ${leadData.email || 'No proporcionado'}`,
-    `*Teléfono:* ${leadData.phone || 'No proporcionado'}`,
+  // The payload uses a pre-approved template named 'lead_notification'.
+  // This template is expected to have a body with 7 parameters.
+  // The parameters are sent in the correct order to match the template.
+  const parameters = [
+    {
+      type: 'text',
+      text: leadData.name || 'No proporcionado',
+    },
+    {
+      type: 'text',
+      text: leadData.email || 'No proporcionado',
+    },
+    {
+      type: 'text',
+      text: leadData.phone || 'No proporcionado',
+    },
+    {
+      type: 'text',
+      text: leadData.company || 'No proporcionado',
+    },
+    {
+      type: 'text',
+      text: 'Asistente de IA del Sitio Web', // 5th parameter: How they found us.
+    },
+    {
+      type: 'text',
+      text: leadData.service || 'No proporcionado',
+    },
+    {
+      type: 'text',
+      text: leadData.message || 'No proporcionado',
+    },
   ];
 
-  if (leadData.company) {
-    leadDetailsParts.push(`*Empresa:* ${leadData.company}`);
-  }
-  if (leadData.service) {
-    leadDetailsParts.push(`*Servicio de Interés:* ${leadData.service}`);
-  }
-  if (leadData.message) {
-    leadDetailsParts.push(`*Mensaje:* ${leadData.message}`);
-  }
-
-  const leadDetails = leadDetailsParts.join('\n');
-  
-  // The payload uses a pre-approved template named 'lead_notification'.
-  // This template is expected to have a body with one parameter (e.g., "Nuevo Lead:\n\n{{1}}")
-  // to accommodate the dynamically generated lead details.
   const payload = {
     messaging_product: 'whatsapp',
     to: toPhoneNumber,
@@ -59,12 +69,7 @@ export async function sendLeadNotification(leadData: LeadData) {
       components: [
         {
           type: 'body',
-          parameters: [
-            {
-              type: 'text',
-              text: leadDetails,
-            },
-          ],
+          parameters: parameters,
         },
       ],
     },
