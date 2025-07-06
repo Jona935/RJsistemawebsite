@@ -66,8 +66,12 @@ export default function Chatbot() {
     }, [isOpen, showCallouts]);
 
     useEffect(() => {
-        scrollToBottom();
-    }, [messages]);
+        const lastMessage = messages[messages.length - 1];
+        // Only scroll to bottom if the last message is from the user or if the bot is thinking.
+        if (lastMessage?.sender === 'user' || isLoading) {
+            scrollToBottom();
+        }
+    }, [messages, isLoading]);
 
     const handleSendMessage = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -197,7 +201,7 @@ export default function Chatbot() {
                                                                 key={index}
                                                                 asChild
                                                                 variant="outline"
-                                                                className="h-auto w-full justify-start whitespace-normal text-left px-3 py-2"
+                                                                className="h-auto w-full justify-start whitespace-normal text-left px-3 py-2 border-accent bg-background/50 hover:bg-accent hover:text-accent-foreground"
                                                                 onClick={() => setIsOpen(false)}
                                                             >
                                                                 <Link href={link.href}>{link.text}</Link>
