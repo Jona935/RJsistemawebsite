@@ -34,20 +34,21 @@ export default function Chatbot() {
     const { toast } = useToast();
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+    const [showCallouts, setShowCallouts] = useState(true);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
     
     useEffect(() => {
-        if (isOpen) return;
+        if (isOpen || !showCallouts) return;
 
         const interval = setInterval(() => {
             setCurrentMessageIndex((prevIndex) => (prevIndex + 1) % calloutMessages.length);
         }, 10000); // Change message every 10 seconds
 
         return () => clearInterval(interval);
-    }, [isOpen]);
+    }, [isOpen, showCallouts]);
 
     useEffect(() => {
         scrollToBottom();
@@ -96,9 +97,18 @@ export default function Chatbot() {
     return (
         <>
             <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
-                 {!isOpen && (
+                 {!isOpen && showCallouts && (
                    <div key={currentMessageIndex} className="w-max max-w-[220px] animate-in fade-in-0 slide-in-from-bottom-2">
-                       <div className="relative rounded-lg border bg-background p-3 shadow-lg">
+                       <div className="relative rounded-lg border bg-background p-3 pr-8 shadow-accent">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="absolute top-1 right-1 h-5 w-5 rounded-full"
+                                onClick={() => setShowCallouts(false)}
+                            >
+                                <X className="h-3 w-3" />
+                                <span className="sr-only">Cerrar mensajes</span>
+                           </Button>
                            <p className="text-sm text-center text-foreground">{calloutMessages[currentMessageIndex]}</p>
                            <div className="absolute bottom-0 right-5 h-3 w-3 translate-y-1/2 rotate-45 transform border-b border-r border-border bg-background"></div>
                        </div>
