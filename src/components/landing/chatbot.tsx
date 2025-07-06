@@ -116,7 +116,6 @@ export default function Chatbot() {
                 )}
                 <Button
                     size="icon"
-                    variant="ghost"
                     className="rounded-full w-14 h-14 shadow-lg transition-all duration-300 bg-background/50 backdrop-blur-md border text-accent hover:scale-110 hover:bg-accent hover:text-accent-foreground"
                     onClick={() => setIsOpen(!isOpen)}
                 >
