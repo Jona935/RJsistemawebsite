@@ -35,7 +35,6 @@ jobs:
           MINIGE_API_KEY: AIzaSyBh2TZw_M7-rW0dxgySjU-SSbOLak0DJCw
         run: |
           npm run build
-          npm run start
 
 # Please do not touch the following action
       - name: Store deployment content
