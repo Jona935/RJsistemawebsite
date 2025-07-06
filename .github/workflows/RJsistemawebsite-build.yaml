@@ -1,0 +1,51 @@
+# To better understand this file read this:
+# https://docs.ionos.space/docs/github-actions-customization/
+
+name: "Deploy Now: Execute Build"
+
+on:
+  workflow_call:
+    inputs:
+      site-url:
+        required: true
+        type: string
+      branch-id:
+        required: true
+        type: string
+
+env:
+  DEPLOYMENT_FOLDER: .next
+
+jobs:
+# Please do not rename this job
+  build-project:
+    name: build RJsistemawebsite
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Run script
+        env:
+          BUSINESS_WHATSAPP_NUMBER: 528661395734
+          META_ACCESS_TOKEN: EAAOZCeLLLXwMBPMZAEWRQkRIgZBVfJgm7BPGuMHwlVk3gvvvxRyR6fNgMEO7xYBQYNJ2GDfcMRKrODnHP26vzFqIrgeqSm6CJi0wGfF69ZAANZCL3lvpZAfyJdOAiqzwtpJN7grsPTeEFPrymkh9RUX7YZA3uuC3yqeDpXJxtIlTy8uzmjVh25eyHnAZBp0oMCPGZAwZDZD
+          META_PHONE_NUMBER_ID: 629812690226515
+          MINIGE_API_KEY: AIzaSyBh2TZw_M7-rW0dxgySjU-SSbOLak0DJCw
+        run: |
+          npm run build
+          npm run start
+
+# Please do not touch the following action
+      - name: Store deployment content
+        uses: ionos-deploy-now/artifact-action@v1
+        with:
+          api-key: ${{ secrets.IONOS_API_KEY }}
+          service-host: api-us.ionos.space
+          project-id: 42e77181-e47d-466f-982b-4d06960956f2
+          branch-id: ${{ inputs.branch-id }}
+          version: ${{ github.sha }}
+          folder: ${{ env.DEPLOYMENT_FOLDER }}
+          config-file: .deploy-now/RJsistemawebsite/config.yaml
+          action: upload
