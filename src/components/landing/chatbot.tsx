@@ -142,8 +142,12 @@ export default function Chatbot() {
             </div>
             {isOpen && (
                 <div className="fixed bottom-24 right-6 z-50 animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95">
-                    <Card className="w-80 h-[500px] flex flex-col shadow-2xl bg-background/80 backdrop-blur-md overflow-hidden">
-                        <CardHeader className="flex flex-row items-center justify-between bg-background border-b">
+                    <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-visible">
+                        <div className="absolute -top-10 -left-20 h-48 w-48 bg-accent/20 rounded-full filter blur-3xl" />
+                        <div className="absolute -bottom-10 -right-10 h-48 w-48 bg-primary/10 rounded-full filter blur-3xl" />
+                    </div>
+                    <Card className="w-80 h-[500px] flex flex-col shadow-2xl bg-background/60 backdrop-blur-lg overflow-hidden">
+                        <CardHeader className="flex flex-row items-center justify-between bg-transparent border-b">
                             <div className="flex items-center gap-2">
                                 <div className="rounded-full p-1 text-primary-foreground bg-gradient-to-br from-primary via-accent to-primary">
                                   <Bot className="h-5 w-5" />
