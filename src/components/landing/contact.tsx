@@ -32,6 +32,7 @@ const formSchema = z.object({
   email: z.string().email({ message: 'Por favor, introduce una dirección de correo electrónico válida.' }),
   phone: z.string().min(1, { message: 'El número de teléfono es obligatorio.' }),
   company: z.string().optional(),
+  source: z.string().optional(),
   service: z.string().optional(),
   message: z.string().optional(),
 });
@@ -49,6 +50,7 @@ export default function Contact() {
       email: '',
       phone: '',
       company: '',
+      source: '',
       service: '',
       message: '',
     },
@@ -138,6 +140,30 @@ export default function Contact() {
                           <FormControl>
                             <Input placeholder="Tu Empresa" {...field} disabled={isSubmitting} />
                           </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="source"
+                      render={({ field }) => (
+                        <FormItem className="sm:col-span-2">
+                          <FormLabel>¿Cómo supiste de nosotros? (Opcional)</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Selecciona una opción" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="Redes Sociales">Redes Sociales</SelectItem>
+                              <SelectItem value="Recomendación">Recomendación</SelectItem>
+                              <SelectItem value="Búsqueda en Google">Búsqueda en Google</SelectItem>
+                              <SelectItem value="Publicidad">Publicidad</SelectItem>
+                              <SelectItem value="Otro">Otro</SelectItem>
+                            </SelectContent>
+                          </Select>
                           <FormMessage />
                         </FormItem>
                       )}

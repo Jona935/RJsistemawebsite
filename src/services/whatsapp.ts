@@ -24,9 +24,13 @@ export async function sendLeadNotification(leadData: LeadData, source: 'chatbot'
 
   const url = `https://graph.facebook.com/v22.0/${phoneNumberId}/messages`;
   
-  const sourceText = source === 'chatbot' 
-    ? 'Asistente de IA del Sitio Web' 
-    : 'Formulario de Contacto';
+  let sourceText: string;
+  if (source === 'chatbot') {
+    sourceText = 'Asistente de IA del Sitio Web';
+  } else {
+    // Use the source from the form if available, otherwise default to a generic form message.
+    sourceText = leadData.source || 'Formulario de Contacto';
+  }
 
   // The payload uses a pre-approved template named 'lead_notification'.
   // This template is expected to have a body with 7 parameters.

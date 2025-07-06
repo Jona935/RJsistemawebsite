@@ -25,6 +25,7 @@ const NavigateInputSchema = z.object({
     company: z.string().optional(),
     service: z.string().optional(),
     message: z.string().optional(),
+    source: z.string().optional(),
   }).optional().describe('Los datos del formulario recopilados hasta ahora.'),
 });
 export type NavigateInput = z.infer<typeof NavigateInputSchema>;
@@ -43,6 +44,7 @@ const NavigateOutputSchema = z.object({
     company: z.string().optional(),
     service: z.string().optional(),
     message: z.string().optional(),
+    source: z.string().optional(),
   }).optional().describe('El objeto de datos del formulario actualizado con la información extraída del último mensaje del usuario.'),
   isFormComplete: z.boolean().optional().describe('Debe establecerse en true cuando todos los campos requeridos (nombre, email, teléfono) estén completos.'),
 });
@@ -95,6 +97,7 @@ const prompt = ai.definePrompt({
 - Empresa: {{formData.company}}
 - Servicio: {{formData.service}}
 - Mensaje: {{formData.message}}
+- Fuente: {{formData.source}}
 {{else}}
 (No hay datos todavía)
 {{/if}}
