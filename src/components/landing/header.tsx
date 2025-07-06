@@ -32,8 +32,13 @@ export default function Header() {
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
           {navLinks.map((link) => (
-            <Link key={link.name} href={link.href} className="transition-colors hover:text-primary">
+            <Link
+              key={link.name}
+              href={link.href}
+              className="group relative py-2 transition-colors hover:text-primary"
+            >
               {link.name}
+              <span className="absolute bottom-0 left-0 h-[2px] w-full scale-x-0 bg-primary transition-transform duration-300 ease-out group-hover:scale-x-100" />
             </Link>
           ))}
         </nav>
@@ -63,8 +68,14 @@ export default function Header() {
               </Link>
               <nav className="grid gap-4">
                 {navLinks.map((link) => (
-                  <Link key={link.name} href={link.href} className="text-lg font-medium transition-colors hover:text-primary" onClick={() => setIsOpen(false)}>
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className="group relative py-2 text-lg font-medium transition-colors hover:text-primary"
+                    onClick={() => setIsOpen(false)}
+                  >
                     {link.name}
+                    <span className="absolute bottom-0 left-0 h-[2px] w-full scale-x-0 bg-primary transition-transform duration-300 ease-out group-hover:scale-x-100" />
                   </Link>
                 ))}
               </nav>
