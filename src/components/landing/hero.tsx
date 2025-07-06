@@ -66,14 +66,14 @@ export default function Hero() {
                       </p>
                     </div>
                     <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                      <Button asChild size="lg">
-                        <Link href="#contact">
+                      <Button asChild size="lg" variant="accent">
+                        <Link href="/#contact">
                           Consultoría Gratis
                           <ArrowRight className="ml-2 h-5 w-5" />
                         </Link>
                       </Button>
                       <Button asChild variant="outline" size="lg">
-                        <Link href="#portfolio">Ver Nuestro Trabajo</Link>
+                        <Link href="/#portfolio">Ver Nuestro Trabajo</Link>
                       </Button>
                     </div>
                   </div>
