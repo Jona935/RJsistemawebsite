@@ -21,7 +21,7 @@ export async function sendLeadNotification(leadData: LeadData) {
     throw new Error('Server configuration error: WhatsApp credentials missing.');
   }
 
-  const url = `https://graph.facebook.com/v20.0/${phoneNumberId}/messages`;
+  const url = `https://graph.facebook.com/v22.0/${phoneNumberId}/messages`;
 
   // Dynamically build the lead details string.
   // This string will be passed as a single parameter to the WhatsApp template.
