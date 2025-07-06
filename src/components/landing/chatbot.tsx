@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Bot, Send, X, Loader2, Sparkles, User } from 'lucide-react';
+import { Bot, Send, X, Loader2, User } from 'lucide-react';
 import { navigate, type NavigateOutput } from '@/ai/flows/navigate-flow';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
@@ -145,7 +145,7 @@ export default function Chatbot() {
                     <Card className="w-80 h-[500px] flex flex-col shadow-2xl bg-background/80 backdrop-blur-md">
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div className="flex items-center gap-2">
-                                <Sparkles className="h-5 w-5 text-primary" />
+                                <Bot className="h-5 w-5 text-primary" />
                                 <CardTitle className="text-lg font-headline">Asistente JR</CardTitle>
                             </div>
                         </CardHeader>
