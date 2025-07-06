@@ -105,9 +105,8 @@ export default function Chatbot() {
                    </div>
                 )}
                 <Button
-                    variant="default"
                     size="icon"
-                    className="rounded-full w-14 h-14 shadow-lg transition-transform hover:scale-105"
+                    className="rounded-full w-14 h-14 shadow-lg transition-all duration-300 bg-background/50 backdrop-blur-md border hover:bg-accent hover:text-accent-foreground hover:scale-110"
                     onClick={() => setIsOpen(!isOpen)}
                 >
                     {isOpen ? <X className="h-6 w-6" /> : <Bot className="h-6 w-6" />}
