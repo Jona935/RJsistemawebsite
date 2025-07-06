@@ -30,11 +30,10 @@ jobs:
       - name: Run script
         env:
           BUSINESS_WHATSAPP_NUMBER: 528661395734
+          GEMINI_API_KEY: AIzaSyBh2TZw_M7-rW0dxgySjU-SSbOLak0DJCw
           META_ACCESS_TOKEN: EAAOZCeLLLXwMBPMZAEWRQkRIgZBVfJgm7BPGuMHwlVk3gvvvxRyR6fNgMEO7xYBQYNJ2GDfcMRKrODnHP26vzFqIrgeqSm6CJi0wGfF69ZAANZCL3lvpZAfyJdOAiqzwtpJN7grsPTeEFPrymkh9RUX7YZA3uuC3yqeDpXJxtIlTy8uzmjVh25eyHnAZBp0oMCPGZAwZDZD
           META_PHONE_NUMBER_ID: 629812690226515
-          MINIGE_API_KEY: AIzaSyBh2TZw_M7-rW0dxgySjU-SSbOLak0DJCw
-        run: |
-          npm run build
+        run: npm run build
 
 # Please do not touch the following action
       - name: Store deployment content
@@ -42,7 +41,7 @@ jobs:
         with:
           api-key: ${{ secrets.IONOS_API_KEY }}
           service-host: api-us.ionos.space
-          project-id: 42e77181-e47d-466f-982b-4d06960956f2
+          project-id: 427f7df0-2b84-471d-a8d9-fc586df561d0
           branch-id: ${{ inputs.branch-id }}
           version: ${{ github.sha }}
           folder: ${{ env.DEPLOYMENT_FOLDER }}
