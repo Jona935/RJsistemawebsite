@@ -130,7 +130,7 @@ export default function Chatbot() {
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div className="flex items-center gap-2">
                                 <Sparkles className="h-5 w-5 text-primary" />
-                                <CardTitle className="text-lg font-headline">Asistente</CardTitle>
+                                <CardTitle className="text-lg font-headline">Asistente</Title>
                             </div>
                         </CardHeader>
                         <CardContent className="flex-grow p-4 overflow-y-auto">
@@ -146,7 +146,7 @@ export default function Chatbot() {
                                             </div>
                                         )}
                                         <div
-                                            className={cn('max-w-[80%] rounded-lg px-3 py-2 text-sm', message.sender === 'user'
+                                            className={cn('max-w-[80%] rounded-lg px-3 py-2 text-sm break-words', message.sender === 'user'
                                                     ? 'bg-muted text-muted-foreground'
                                                     : 'bg-card border'
                                                 )}
