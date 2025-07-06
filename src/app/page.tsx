@@ -11,9 +11,10 @@ export default function Home() {
   return (
     <div className="relative min-h-dvh overflow-clip">
       <div aria-hidden="true" className="absolute inset-0 z-0">
-        <div className="absolute top-[-10rem] -left-48 w-96 h-96 bg-accent/20 rounded-full filter blur-3xl opacity-50 animate-blob" />
-        <div className="absolute top-[-1rem] -right-48 w-96 h-96 bg-accent/15 rounded-full filter blur-3xl opacity-50 animate-blob [animation-delay:-2s]" />
-        <div className="absolute -bottom-32 left-20 w-96 h-96 bg-accent/10 rounded-full filter blur-3xl opacity-50 animate-blob [animation-delay:-4s]" />
+        {/* Luces/Manchas Azules Detrás */}
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-accent/30 rounded-full blur-3xl animate-blob" />
+        <div className="absolute top-10 right-10 w-80 h-80 bg-accent/20 rounded-full blur-2xl animate-blob [animation-delay:-2s]" />
+        <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-primary/10 rounded-full blur-[100px] animate-blob [animation-delay:-4s]" />
       </div>
 
       <div className="relative z-10 flex flex-col min-h-dvh">
