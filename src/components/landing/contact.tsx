@@ -153,7 +153,7 @@ export default function Contact() {
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Selecciona un servicio" />
-                              </Trigger>
+                              </SelectTrigger>
                             </FormControl>
                             <SelectContent>
                               <SelectItem value="Diseño Web">Diseño Web</SelectItem>
