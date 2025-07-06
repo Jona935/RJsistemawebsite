@@ -77,15 +77,10 @@ export default {
             height: '0',
           },
         },
-        'shine': {
-          'from': { backgroundPosition: '200% 0' },
-          'to': { backgroundPosition: '-200% 0' },
-        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.8s ease-out',
         'accordion-up': 'accordion-up 0.8s ease-out',
-        'shine': 'shine 12s linear infinite',
       },
     },
   },
