@@ -44,7 +44,7 @@ export default function Chatbot() {
 
         const interval = setInterval(() => {
             setCurrentMessageIndex((prevIndex) => (prevIndex + 1) % calloutMessages.length);
-        }, 5000); // Change message every 5 seconds
+        }, 10000); // Change message every 10 seconds
 
         return () => clearInterval(interval);
     }, [isOpen]);
@@ -107,10 +107,10 @@ export default function Chatbot() {
                 <Button
                     variant="default"
                     size="icon"
-                    className="rounded-full w-14 h-14 shadow-lg"
+                    className="rounded-full w-14 h-14 shadow-lg animate-border-pulse"
                     onClick={() => setIsOpen(!isOpen)}
                 >
-                    {isOpen ? <X className="h-6 w-6" /> : <Bot className="h-6 w-6" />}
+                    {isOpen ? <X className="h-6 w-6" /> : <Bot className="h-6 w-6 animate-icon-pulse" />}
                     <span className="sr-only">Abrir chat de ayuda</span>
                 </Button>
             </div>
