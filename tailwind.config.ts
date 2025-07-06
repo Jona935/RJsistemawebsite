@@ -86,10 +86,10 @@ export default {
             transform: 'translate(0px, 0px) scale(1)',
           },
           '33%': {
-            transform: 'translate(30px, -50px) scale(1.1)',
+            transform: 'translate(80px, -100px) scale(1.1)',
           },
           '66%': {
-            transform: 'translate(-20px, 20px) scale(0.9)',
+            transform: 'translate(-60px, 70px) scale(0.9)',
           },
           '100%': {
             transform: 'translate(0px, 0px) scale(1)',
@@ -99,7 +99,7 @@ export default {
       animation: {
         'accordion-down': 'accordion-down 0.8s ease-out',
         'accordion-up': 'accordion-up 0.8s ease-out',
-        blob: 'blob 7s infinite ease-in-out',
+        blob: 'blob 9s infinite ease-in-out',
       },
     },
   },
