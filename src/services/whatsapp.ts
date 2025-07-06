@@ -32,7 +32,7 @@ export async function sendLeadNotification(leadData: LeadData, source: 'chatbot'
     sourceText = leadData.source || 'Formulario de Contacto';
   }
 
-  // The payload uses a pre-approved template named 'lead_notification'.
+  // The payload uses a pre-approved template named 'nueva_entrada'.
   // This template is expected to have a body with 7 parameters.
   // The parameters are sent in the correct order to match the template.
   const parameters = [
@@ -71,7 +71,7 @@ export async function sendLeadNotification(leadData: LeadData, source: 'chatbot'
     to: toPhoneNumber,
     type: 'template',
     template: {
-      name: 'lead_notification',
+      name: 'nueva_entrada',
       language: {
         code: 'es_mx',
       },
