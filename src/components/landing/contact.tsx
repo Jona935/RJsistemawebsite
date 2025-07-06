@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -22,20 +21,8 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { personalizeContent, type PersonalizeContentOutput } from '@/ai/flows/personalize-content';
-import { Loader2, Sparkles } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Send } from 'lucide-react';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'El nombre debe tener al menos 2 caracteres.' }),
@@ -49,11 +36,6 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function Contact() {
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<PersonalizeContentOutput | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { toast } = useToast();
-
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -67,31 +49,31 @@ export default function Contact() {
   });
 
   async function onSubmit(values: FormValues) {
-    setLoading(true);
-    try {
-      let userInquiry = `El mensaje del usuario es: "${values.message || 'No se proporcionó ningún mensaje.'}".`;
-      if (values.service) {
-        userInquiry = `El usuario está interesado en el servicio "${values.service}". ` + userInquiry;
-      }
-      if (values.company) {
-          userInquiry = `El usuario trabaja en ${values.company}. ` + userInquiry;
-      }
-      userInquiry = `Detalles de contacto: Nombre: ${values.name}, Email: ${values.email}, Teléfono: ${values.phone}. ` + userInquiry;
+    // IMPORTANTE: Reemplaza este número con tu número de WhatsApp, incluyendo el código de país (ej. 521234567890).
+    const whatsAppNumber = "521XXXXXXXXXX"; 
 
-      const aiResult = await personalizeContent({ userInquiry });
-      setResult(aiResult);
-      setIsDialogOpen(true);
-      form.reset();
-    } catch (error) {
-      console.error('Error personalizing content:', error);
-      toast({
-        title: 'Ocurrió un Error',
-        description: 'No pudimos obtener una sugerencia para ti. Por favor, inténtalo de nuevo más tarde.',
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
+    const messageParts = [
+      `*Nuevo Lead de JRsistemas*`,
+      `*Nombre:* ${values.name}`,
+      `*Email:* ${values.email}`,
+      `*Teléfono:* ${values.phone}`,
+    ];
+
+    if (values.company) {
+      messageParts.push(`*Empresa:* ${values.company}`);
     }
+    if (values.service) {
+      messageParts.push(`*Servicio de Interés:* ${values.service}`);
+    }
+    if (values.message) {
+      messageParts.push(`*Mensaje:* ${values.message}`);
+    }
+
+    const message = encodeURIComponent(messageParts.join('\n'));
+    const whatsappUrl = `https://wa.me/${whatsAppNumber}?text=${message}`;
+
+    window.open(whatsappUrl, '_blank');
+    form.reset();
   }
 
   return (
@@ -101,7 +83,7 @@ export default function Contact() {
           <div className="space-y-3">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">Contáctanos</h2>
             <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              ¿Tienes un proyecto en mente? Completa el formulario a continuación para ponerte en contacto. Nuestro asistente de IA analizará tu solicitud para sugerirte los mejores servicios para ti.
+              ¿Tienes un proyecto en mente? Completa el formulario a continuación y te contactaremos por WhatsApp lo antes posible.
             </p>
           </div>
           <div className="mx-auto w-full max-w-lg">
@@ -171,7 +153,7 @@ export default function Contact() {
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Selecciona un servicio" />
-                              </SelectTrigger>
+                              </Trigger>
                             </FormControl>
                             <SelectContent>
                               <SelectItem value="Diseño Web">Diseño Web</SelectItem>
@@ -200,13 +182,9 @@ export default function Contact() {
                         </FormItem>
                       )}
                     />
-                    <Button type="submit" disabled={loading} variant="accent" className="w-full sm:col-span-2">
-                      {loading ? (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      ) : (
-                        <Sparkles className="mr-2 h-4 w-4" />
-                      )}
-                      Obtener Sugerencias con IA
+                    <Button type="submit" variant="default" className="w-full sm:col-span-2">
+                      <Send className="mr-2 h-4 w-4" />
+                      Enviar por WhatsApp
                     </Button>
                   </form>
                 </Form>
@@ -215,39 +193,6 @@ export default function Contact() {
           </div>
         </div>
       </div>
-
-      <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2 font-headline">
-              <Sparkles className="text-accent" />
-              ¡Aquí tienes nuestras sugerencias para ti!
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              Basado en tu consulta, creemos que los siguientes servicios serían ideales para tu proyecto.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          {result && (
-            <div className="space-y-4">
-              <div>
-                <h3 className="font-semibold mb-2">Servicios Sugeridos:</h3>
-                <div className="flex flex-wrap gap-2">
-                  {result.suggestedServices.map((service) => (
-                    <Badge key={service} variant="default" className="bg-primary text-primary-foreground">{service}</Badge>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Justificación:</h3>
-                <p className="text-sm text-muted-foreground">{result.reasoning}</p>
-              </div>
-            </div>
-          )}
-          <AlertDialogFooter>
-            <AlertDialogAction>¡Entendido!</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </section>
   );
 }
