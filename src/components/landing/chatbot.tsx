@@ -40,12 +40,16 @@ export default function Chatbot() {
     };
     
     useEffect(() => {
+        let initialTimestamp = '';
+        if (typeof window !== 'undefined') {
+            initialTimestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
         setMessages([
             { 
                 id: 1, 
                 sender: 'bot', 
                 text: '¡Hola! Soy tu asistente de navegación. ¿Cómo puedo ayudarte a encontrar lo que buscas en JRsistemas?',
-                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+                timestamp: initialTimestamp
             }
         ]);
     }, []);
@@ -142,7 +146,7 @@ export default function Chatbot() {
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div className="flex items-center gap-2">
                                 <Sparkles className="h-5 w-5 text-primary" />
-                                <CardTitle className="text-lg font-headline">Asistente</CardTitle>
+                                <CardTitle className="text-lg font-headline">Asistente JR</CardTitle>
                             </div>
                         </CardHeader>
                         <CardContent className="flex-grow p-4 overflow-y-auto">
@@ -158,6 +162,9 @@ export default function Chatbot() {
                                             </div>
                                         )}
                                         <div className={cn("flex flex-col gap-1 max-w-[80%]", message.sender === 'user' ? 'items-end' : 'items-start')}>
+                                            <span className="text-xs font-medium text-muted-foreground px-1">
+                                                {message.sender === 'bot' ? 'Asistente JR' : 'Tú'}
+                                            </span>
                                             <div
                                                 className={cn('w-fit max-w-full rounded-lg px-3 py-2 text-sm break-words', message.sender === 'user'
                                                         ? 'bg-muted text-muted-foreground'
