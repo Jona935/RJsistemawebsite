@@ -9,6 +9,7 @@ import { navigate, type NavigateOutput } from '@/ai/flows/navigate-flow';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import ReactMarkdown from 'react-markdown';
 
 type Message = {
     id: number;
@@ -177,7 +178,18 @@ export default function Chatbot() {
                                                         : 'bg-card border'
                                                     )}
                                             >
-                                                {message.text}
+                                                {message.sender === 'bot' && message.text ? (
+                                                    <ReactMarkdown
+                                                        components={{
+                                                            p: ({...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                                                            strong: ({...props}) => <strong className="font-bold" {...props} />,
+                                                        }}
+                                                    >
+                                                        {message.text}
+                                                    </ReactMarkdown>
+                                                ) : (
+                                                    message.text
+                                                )}
                                                 {message.links && message.links.length > 0 && (
                                                     <div className="mt-2 flex flex-col gap-2">
                                                         {message.links.map((link, index) => (
