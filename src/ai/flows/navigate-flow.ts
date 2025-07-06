@@ -45,7 +45,7 @@ const NavigateOutputSchema = z.object({
     service: z.string().optional(),
     message: z.string().optional(),
     source: z.string().optional(),
-  }).optional().describe('El objeto de datos del formulario actualizado con la información extraída del último mensaje del usuario.'),
+  }).optional().describe('El objeto de datos del formulario actualizado con la información extraída del último mensaje del usuario. Debes rellenar todos los campos posibles (incluyendo los opcionales como empresa, servicio y mensaje) basándote en la conversación.'),
   isFormComplete: z.boolean().optional().describe('Debe establecerse en true cuando todos los campos requeridos (nombre, email, teléfono) estén completos.'),
 });
 export type NavigateOutput = z.infer<typeof NavigateOutputSchema>;
@@ -82,10 +82,14 @@ const prompt = ai.definePrompt({
 - **Campos del formulario:** \`name\` (requerido), \`email\` (requerido), \`phone\` (requerido), \`company\` (opcional), \`service\` (opcional), \`message\` (opcional).
 - **Lógica CRÍTICA:**
   1.  **Analiza el Contexto:** Revisa el \`history\` de la conversación y el objeto \`formData\` de la entrada.
-  2.  **Extrae Información:** Popula \`updatedFormData\` con cualquier información que el usuario haya dado en su último mensaje o en mensajes anteriores. Si el usuario ya mencionó su nombre, idea de proyecto o empresa, ¡úsalo!
-  3.  **No Repitas Preguntas:** NUNCA preguntes por un dato que ya está presente en \`formData\`.
-  4.  **Pregunta Uno a Uno:** Haz una sola pregunta a la vez para el siguiente campo requerido que falte. Sé natural. Ejemplo: "¡Genial! Para empezar, ¿cuál es tu nombre?".
-  5.  **Formulario Completo:** Una vez que tengas \`name\`, \`email\` y \`phone\`, establece \`isFormComplete: true\`. Da un mensaje de agradecimiento y confirma que la información **ha sido enviada** a nuestro equipo. Asegura al usuario que será contactado pronto por un asesor.
+  2.  **Extrae Información (Regla Principal):** En cada turno, tu primera tarea es analizar el último mensaje del usuario (\`history[history.length-1].text\`) y rellenar CUALQUIER campo de \`updatedFormData\` con la información que encuentres. Esto incluye los campos requeridos y los opcionales.
+  3.  **Extracción de Campos Opcionales (¡Muy Importante!):**
+      - **\`company\`**: Si el usuario menciona el nombre de una empresa o negocio, extráelo.
+      - **\`service\`**: Si el usuario menciona interés en "diseño web", "automatización" o "servicios de TI", o describe una necesidad relacionada, deduce el servicio y rellena este campo.
+      - **\`message\`**: Resume la necesidad o idea de proyecto principal del usuario de toda la conversación en este campo. Si el usuario dice "quiero una web para mi empresa de pasteles", el mensaje debería ser algo como "Interesado en una página web para su empresa de pasteles.". Actualiza este campo si el usuario da más detalles.
+  4.  **No Repitas Preguntas:** NUNCA preguntes por un dato que ya está presente en el objeto \`formData\` de entrada.
+  5.  **Pregunta Uno a Uno:** Después de extraer toda la información posible, si todavía falta alguno de los campos REQUERIDOS (\`name\`, \`email\`, \`phone\`), haz UNA SOLA pregunta para obtener el siguiente campo que falte. Sé natural. Ejemplo: "¡Perfecto! ¿Cuál es tu correo electrónico?".
+  6.  **Formulario Completo:** Una vez que tengas \`name\`, \`email\` y \`phone\`, establece \`isFormComplete: true\`. Da un mensaje de agradecimiento y confirma que la información **ha sido enviada** a nuestro equipo. Asegura al usuario que será contactado pronto por un asesor.
 
 **Contexto Actual:**
 - **Modo Captura de Leads Activo:** \`{{isLeadCaptureMode}}\`
