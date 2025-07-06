@@ -16,10 +16,6 @@ type Message = {
     sender: 'bot' | 'user';
     text?: string;
     links?: NavigateOutput['suggestedLinks'];
-    contactAction?: {
-        text: string;
-        href: string;
-    };
     timestamp: string;
 };
 
@@ -74,10 +70,10 @@ export default function Chatbot() {
 
     useEffect(() => {
         const lastMessage = messages[messages.length - 1];
-        if (lastMessage?.sender === 'user' || isLoading) {
+        if (lastMessage?.sender === 'user') {
             scrollToBottom();
         }
-    }, [messages, isLoading]);
+    }, [messages]);
 
     const handleSendMessage = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -124,11 +120,7 @@ export default function Chatbot() {
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             };
 
-            if (result.isFormComplete && result.contactLink) {
-                botMessage.contactAction = {
-                    text: 'Enviar Información por WhatsApp',
-                    href: result.contactLink
-                };
+            if (result.isFormComplete) {
                 setIsFormMode(false);
                 setFormData({});
             }
@@ -190,7 +182,7 @@ export default function Chatbot() {
                         <div className="absolute -top-10 -left-20 h-48 w-48 bg-accent/20 rounded-full filter blur-3xl" />
                         <div className="absolute -bottom-10 -right-10 h-48 w-48 bg-primary/10 rounded-full filter blur-3xl" />
                     </div>
-                    <Card className="w-80 h-[500px] flex flex-col shadow-2xl bg-background/60 backdrop-blur-lg overflow-hidden">
+                    <Card className="w-80 h-[500px] flex flex-col shadow-2xl bg-background/80 backdrop-blur-lg overflow-hidden">
                         <CardHeader className="flex flex-row items-center justify-between bg-transparent border-b">
                             <div className="flex items-center gap-2">
                                 <div className="rounded-full p-1 text-primary-foreground bg-gradient-to-br from-primary via-accent to-primary">
@@ -246,21 +238,6 @@ export default function Chatbot() {
                                                                 <Link href={link.href}>{link.text}</Link>
                                                             </Button>
                                                         ))}
-                                                    </div>
-                                                )}
-                                                {message.contactAction && (
-                                                    <div className="mt-2">
-                                                        <Button
-                                                            variant="accent"
-                                                            className="h-auto w-full justify-center whitespace-normal text-left px-3 py-2"
-                                                            onClick={() => {
-                                                                window.open(message.contactAction!.href, '_blank');
-                                                                setIsOpen(false);
-                                                            }}
-                                                        >
-                                                            {message.contactAction.text}
-                                                            <Send className="ml-2 h-4 w-4" />
-                                                        </Button>
                                                     </div>
                                                 )}
                                             </div>

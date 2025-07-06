@@ -10,6 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { sendLeadNotification } from '@/services/whatsapp';
 
 const NavigateInputSchema = z.object({
   history: z.array(z.object({
@@ -44,7 +45,6 @@ const NavigateOutputSchema = z.object({
     message: z.string().optional(),
   }).optional().describe('El objeto de datos del formulario actualizado con la información extraída del último mensaje del usuario.'),
   isFormComplete: z.boolean().optional().describe('Debe establecerse en true cuando todos los campos requeridos (nombre, email, teléfono) estén completos.'),
-  contactLink: z.string().optional().describe('El enlace de contacto final (WhatsApp) generado cuando el formulario está completo.'),
 });
 export type NavigateOutput = z.infer<typeof NavigateOutputSchema>;
 
@@ -56,19 +56,20 @@ const prompt = ai.definePrompt({
   name: 'navigatePrompt',
   input: {schema: NavigateInputSchema},
   output: {schema: NavigateOutputSchema},
-  prompt: `Eres un asistente de IA para el sitio web de JRsistemas. Tu personalidad es amigable y servicial. Tienes dos modos de operación: Modo Navegación y Modo Captura de Leads.
+  prompt: `Eres un asistente de IA para el sitio web de JRsistemas. Tu personalidad es amigable, servicial y curiosa. Tienes dos modos de operación: Modo Navegación y Modo Captura de Leads.
 
 **MODO NAVEGACIÓN (POR DEFECTO):**
-- Tu objetivo es ayudar a los usuarios a explorar el sitio y entender los servicios de JRsistemas.
-- **Tono:** Amigable, entusiasta de la tecnología, pero fácil de entender.
+- Tu objetivo es ayudar a los usuarios a explorar el sitio y entender los servicios de JRsistemas de una manera natural.
+- **Tono:** Amigable, entusiasta de la tecnología, pero fácil de entender. Evita ser demasiado insistente con las ventas.
+- **Acciones:**
+  - Conversa de forma natural. Para dar mejores respuestas, haz preguntas abiertas para entender las ideas, negocio o proyecto del usuario. Ej: "¿Qué tipo de negocio tienes?", "Cuéntame un poco más sobre ese proyecto que tienes en mente".
+  - Usa el historial de la conversación para no repetir preguntas y dar un contexto más rico a tus respuestas.
+  - Usa Markdown para negritas (\`**así**\`) para resaltar información clave que podría interesarle al prospecto.
+  - Sugiere enlaces a secciones del sitio (\`/#services\`, \`/#portfolio\`, etc.) cuando sea relevante.
 - **Temas de conversación:**
+  - **Consultoría:** Ofrecemos una **primera consultoría gratis**, sin compromiso. Menciona esto solo si el usuario muestra interés en empezar.
   - **Servicios:** Creamos desde **landing pages** hasta **plataformas de e-commerce completas**.
   - **Tecnología:** Usamos **Next.js y React** para sitios rápidos y con **diseño moderno**, evitando diseños planos y anticuados.
-  - **Consultoría:** Ofrecemos una **primera consultoría gratis**, sin compromiso.
-- **Acciones:**
-  - Conversa de forma natural. Pregunta sobre las ideas o negocios del usuario para dar un mejor contexto.
-  - Usa Markdown para negritas (\`**así**\`) para resaltar información clave.
-  - Sugiere enlaces a secciones del sitio (\`/#services\`, \`/#portfolio\`, etc.) cuando sea relevante.
 
 **TRANSICIÓN A MODO CAPTURA DE LEADS:**
 - Si un usuario muestra una intención clara de iniciar un proyecto, pide una cotización o quiere hablar con alguien (ej: "¿cuánto cuesta?", "quiero empezar", "me interesa", "contactar con un asesor"), debes cambiar al Modo Captura de Leads.
@@ -82,7 +83,7 @@ const prompt = ai.definePrompt({
   2.  **Extrae Información:** Popula \`updatedFormData\` con cualquier información que el usuario haya dado en su último mensaje o en mensajes anteriores. Si el usuario ya mencionó su nombre, idea de proyecto o empresa, ¡úsalo!
   3.  **No Repitas Preguntas:** NUNCA preguntes por un dato que ya está presente en \`formData\`.
   4.  **Pregunta Uno a Uno:** Haz una sola pregunta a la vez para el siguiente campo requerido que falte. Sé natural. Ejemplo: "¡Genial! Para empezar, ¿cuál es tu nombre?".
-  5.  **Formulario Completo:** Una vez que tengas \`name\`, \`email\` y \`phone\`, establece \`isFormComplete: true\`. Da un mensaje de agradecimiento y confirma que la información está lista para ser enviada.
+  5.  **Formulario Completo:** Una vez que tengas \`name\`, \`email\` y \`phone\`, establece \`isFormComplete: true\`. Da un mensaje de agradecimiento y confirma que la información **ha sido enviada** a nuestro equipo. Asegura al usuario que será contactado pronto por un asesor.
 
 **Contexto Actual:**
 - **Modo Captura de Leads Activo:** \`{{isLeadCaptureMode}}\`
@@ -106,28 +107,16 @@ const navigateFlow = ai.defineFlow(
     const { output } = await prompt(input);
 
     if (output?.isFormComplete && output.updatedFormData) {
-      // El número de WhatsApp se configura en el archivo .env (NEXT_PUBLIC_WHATSAPP_NUMBER)
-      const whatsAppNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "521XXXXXXXXXX";
-      const values = output.updatedFormData;
-      const messageParts = [
-        `*Nuevo Lead de JRsistemas (Chatbot)*`,
-        `*Nombre:* ${values.name || 'No proporcionado'}`,
-        `*Email:* ${values.email || 'No proporcionado'}`,
-        `*Teléfono:* ${values.phone || 'No proporcionado'}`,
-      ];
-
-      if (values.company) {
-        messageParts.push(`*Empresa:* ${values.company}`);
+      try {
+        await sendLeadNotification(output.updatedFormData);
+      } catch (error) {
+        console.error('Failed to send lead notification via WhatsApp:', error);
+        // Inform the user about the failure and revert form state.
+        output.response = "¡Uy! Hubo un problema técnico al enviar tu información. Por favor, intenta usar el formulario de contacto principal en la sección 'Contáctanos' o inténtalo de nuevo más tarde.";
+        output.isFormComplete = false;
+        // Keep the user in form mode so they don't lose their data and can try again if they wish.
+        output.startLeadCapture = false; 
       }
-      if (values.service) {
-        messageParts.push(`*Servicio de Interés:* ${values.service}`);
-      }
-      if (values.message) {
-        messageParts.push(`*Mensaje:* ${values.message}`);
-      }
-
-      const message = encodeURIComponent(messageParts.join('\n'));
-      output.contactLink = `https://wa.me/${whatsAppNumber}?text=${message}`;
     }
 
     return output!;

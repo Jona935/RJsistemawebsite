@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -22,7 +23,9 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Card, CardContent } from '@/components/ui/card';
-import { Send } from 'lucide-react';
+import { Send, Loader2 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { sendLeadNotification } from '@/services/whatsapp';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'El nombre debe tener al menos 2 caracteres.' }),
@@ -36,6 +39,9 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function Contact() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,31 +55,24 @@ export default function Contact() {
   });
 
   async function onSubmit(values: FormValues) {
-    // El número de WhatsApp se configura en el archivo .env (NEXT_PUBLIC_WHATSAPP_NUMBER)
-    const whatsAppNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "521XXXXXXXXXX"; 
-
-    const messageParts = [
-      `*Nuevo Lead de JRsistemas*`,
-      `*Nombre:* ${values.name}`,
-      `*Email:* ${values.email}`,
-      `*Teléfono:* ${values.phone}`,
-    ];
-
-    if (values.company) {
-      messageParts.push(`*Empresa:* ${values.company}`);
+    setIsSubmitting(true);
+    try {
+      await sendLeadNotification(values);
+      toast({
+        title: '¡Mensaje Enviado!',
+        description: 'Gracias por contactarnos. Nuestro equipo te responderá pronto.',
+      });
+      form.reset();
+    } catch (error) {
+      console.error('Failed to submit contact form:', error);
+      toast({
+        title: 'Error al Enviar Mensaje',
+        description: 'No se pudo enviar tu información. Por favor, verifica que los datos sean correctos o inténtalo más tarde.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
     }
-    if (values.service) {
-      messageParts.push(`*Servicio de Interés:* ${values.service}`);
-    }
-    if (values.message) {
-      messageParts.push(`*Mensaje:* ${values.message}`);
-    }
-
-    const message = encodeURIComponent(messageParts.join('\n'));
-    const whatsappUrl = `https://wa.me/${whatsAppNumber}?text=${message}`;
-
-    window.open(whatsappUrl, '_blank');
-    form.reset();
   }
 
   return (
@@ -83,7 +82,7 @@ export default function Contact() {
           <div className="space-y-3">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">Contáctanos</h2>
             <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              ¿Tienes un proyecto en mente? Completa el formulario a continuación y te contactaremos por WhatsApp lo antes posible.
+              ¿Tienes un proyecto en mente? Completa el formulario y nuestro equipo te contactará lo antes posible.
             </p>
           </div>
           <div className="mx-auto w-full max-w-lg">
@@ -98,7 +97,7 @@ export default function Contact() {
                         <FormItem>
                           <FormLabel>Nombre</FormLabel>
                           <FormControl>
-                            <Input placeholder="Juan Pérez" {...field} />
+                            <Input placeholder="Juan Pérez" {...field} disabled={isSubmitting} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -111,7 +110,7 @@ export default function Contact() {
                         <FormItem>
                           <FormLabel>Correo Electrónico</FormLabel>
                           <FormControl>
-                            <Input placeholder="juan.perez@example.com" {...field} />
+                            <Input placeholder="juan.perez@example.com" {...field} disabled={isSubmitting} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -124,7 +123,7 @@ export default function Contact() {
                         <FormItem>
                           <FormLabel>Teléfono</FormLabel>
                           <FormControl>
-                            <Input placeholder="(123) 456-7890" {...field} />
+                            <Input placeholder="(123) 456-7890" {...field} disabled={isSubmitting} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -137,7 +136,7 @@ export default function Contact() {
                         <FormItem>
                           <FormLabel>Empresa (Opcional)</FormLabel>
                           <FormControl>
-                            <Input placeholder="Tu Empresa" {...field} />
+                            <Input placeholder="Tu Empresa" {...field} disabled={isSubmitting} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -149,7 +148,7 @@ export default function Contact() {
                       render={({ field }) => (
                         <FormItem className="sm:col-span-2">
                           <FormLabel>Servicio de Interés (Opcional)</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Selecciona un servicio" />
@@ -176,15 +175,20 @@ export default function Contact() {
                               placeholder="Cuéntanos sobre tu proyecto o en qué necesitas ayuda..."
                               className="min-h-[100px]"
                               {...field}
+                              disabled={isSubmitting}
                             />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    <Button type="submit" variant="default" className="w-full sm:col-span-2">
-                      <Send className="mr-2 h-4 w-4" />
-                      Enviar
+                    <Button type="submit" variant="default" className="w-full sm:col-span-2" disabled={isSubmitting}>
+                      {isSubmitting ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      ) : (
+                        <Send className="mr-2 h-4 w-4" />
+                      )}
+                      {isSubmitting ? 'Enviando...' : 'Enviar'}
                     </Button>
                   </form>
                 </Form>
