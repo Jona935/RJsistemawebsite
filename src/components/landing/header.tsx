@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
 import { ModeToggle } from '../theme-toggle';
+import Logo from '@/components/logo';
 
 const navLinks = [
   { name: 'Socios', href: '/#partners' },
@@ -22,22 +22,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
-          <Image
-            src="/logonormal.svg"
-            alt="JRsistemas Logo"
-            width={40}
-            height={40}
-            className="h-10 w-auto block dark:hidden"
-            priority
-          />
-           <Image
-            src="/logodark.svg"
-            alt="JRsistemas Logo"
-            width={40}
-            height={40}
-            className="h-10 w-auto hidden dark:block"
-            priority
-          />
+          <Logo />
           <span className="font-roboto font-bold text-xl text-foreground">
             sistemas
           </span>
@@ -71,22 +56,7 @@ export default function Header() {
             <div className="grid gap-6 p-6">
               <div className="flex justify-between items-center">
                 <Link href="/" className="flex items-center gap-2" onClick={() => setIsOpen(false)}>
-                   <Image
-                      src="/logonormal.svg"
-                      alt="JRsistemas Logo"
-                      width={40}
-                      height={40}
-                      className="h-10 w-auto block dark:hidden"
-                      priority
-                    />
-                    <Image
-                      src="/logodark.svg"
-                      alt="JRsistemas Logo"
-                      width={40}
-                      height={40}
-                      className="h-10 w-auto hidden dark:block"
-                      priority
-                    />
+                   <Logo />
                   <span className="font-roboto font-bold text-xl text-foreground">
                     sistemas
                   </span>
