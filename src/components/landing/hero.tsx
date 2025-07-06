@@ -12,6 +12,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 const heroSlides = [
   {
@@ -36,10 +37,14 @@ const heroSlides = [
 
 
 export default function Hero() {
+  const plugin = React.useRef(
+    Autoplay({ delay: 5000, stopOnInteraction: true })
+  );
 
   return (
     <section id="hero" className="w-full py-12 md:py-16">
        <Carousel
+          plugins={[plugin.current]}
           className="w-full relative"
           opts={{
             align: "start",
