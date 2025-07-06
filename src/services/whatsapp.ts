@@ -84,6 +84,9 @@ export async function sendLeadNotification(leadData: LeadData, source: 'chatbot'
     },
   };
 
+  // Log the payload for debugging purposes
+  console.log('Sending WhatsApp payload:', JSON.stringify(payload, null, 2));
+
   try {
     const response = await fetch(url, {
       method: 'POST',
