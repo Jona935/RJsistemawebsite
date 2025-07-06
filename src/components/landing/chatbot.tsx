@@ -67,7 +67,6 @@ export default function Chatbot() {
 
     useEffect(() => {
         const lastMessage = messages[messages.length - 1];
-        // Only scroll to bottom if the last message is from the user or if the bot is thinking.
         if (lastMessage?.sender === 'user' || isLoading) {
             scrollToBottom();
         }
@@ -83,12 +82,21 @@ export default function Chatbot() {
             text: inputValue,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         };
-        setMessages((prev) => [...prev, userMessage]);
+        
+        const updatedMessages = [...messages, userMessage];
+        setMessages(updatedMessages);
         setInputValue('');
         setIsLoading(true);
 
+        const historyForAI = updatedMessages
+            .filter(m => m.text) // Ensure message has text
+            .map(({ sender, text }) => ({
+                sender,
+                text: text!,
+            }));
+
         try {
-            const result = await navigate({ userQuery: inputValue });
+            const result = await navigate({ history: historyForAI });
             const botMessage: Message = {
                 id: Date.now() + 1,
                 sender: 'bot',
