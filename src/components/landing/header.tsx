@@ -35,10 +35,10 @@ export default function Header() {
             <Link
               key={link.name}
               href={link.href}
-              className="group relative py-2 transition-colors hover:text-primary"
+              className="group relative py-2 transition-colors hover:text-accent"
             >
               {link.name}
-              <span className="absolute bottom-0 left-0 h-[2px] w-full scale-x-0 bg-primary transition-transform duration-300 ease-out group-hover:scale-x-100" />
+              <span className="absolute bottom-0 left-0 h-[2px] w-full scale-x-0 bg-accent transition-transform duration-300 ease-out group-hover:scale-x-100" />
             </Link>
           ))}
         </nav>
@@ -71,11 +71,11 @@ export default function Header() {
                   <Link
                     key={link.name}
                     href={link.href}
-                    className="group relative py-2 text-lg font-medium transition-colors hover:text-primary"
+                    className="group relative py-2 text-lg font-medium transition-colors hover:text-accent"
                     onClick={() => setIsOpen(false)}
                   >
                     {link.name}
-                    <span className="absolute bottom-0 left-0 h-[2px] w-full scale-x-0 bg-primary transition-transform duration-300 ease-out group-hover:scale-x-100" />
+                    <span className="absolute bottom-0 left-0 h-[2px] w-full scale-x-0 bg-accent transition-transform duration-300 ease-out group-hover:scale-x-100" />
                   </Link>
                 ))}
               </nav>
